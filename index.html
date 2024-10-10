@@ -75,18 +75,25 @@
             width: 494px;
             height: 547px;
             margin: 20px auto;
-            overflow: hidden; /* Add this line */
+            overflow: hidden;
         }
-        #giftImage {
-            background-image: url("https://3dxchat-status.com/image/gift1.png?12");
+        #giftBackground1, #giftBackground2 {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            position: absolute; /* Add this line */
-            top: 0; /* Add this line */
-            left: 0; /* Add this line */
+            object-fit: contain;
+        }
+        #giftBackground2 {
+            opacity: 0.5; /* Adjust as needed */
+        }
+        #giftImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
         #giftParsedForm {
             position: absolute; /* Change from relative to absolute */
@@ -165,6 +172,7 @@
                 </div>
                 <div class="col-md-6">
                     <div id="giftPreviewContainer">
+                        <img id="giftBackground1" src="https://3dxchat-status.com/image/gift1.png?12" alt="Gift Background 1">
                         <div id="giftImage">
                             <form id="giftParsedForm">
                                 <div class="form-group">
@@ -172,6 +180,7 @@
                                 </div>
                             </form>
                         </div>
+                        <img id="giftBackground2" src="https://3dxchat-status.com/image/gift2.png?12" alt="Gift Background 2">
                     </div>
                 </div>
             </div>
@@ -285,6 +294,19 @@
 
             createSymbolsMenu();
             updateGiftPreview();
+
+            // Check if images are loading
+            $('<img>').attr('src', 'https://3dxchat-status.com/image/gift1.png?12').on('load', function() {
+                console.log('Gift background 1 loaded successfully');
+            }).on('error', function() {
+                console.error('Failed to load gift background 1');
+            });
+
+            $('<img>').attr('src', 'https://3dxchat-status.com/image/gift2.png?12').on('load', function() {
+                console.log('Gift background 2 loaded successfully');
+            }).on('error', function() {
+                console.error('Failed to load gift background 2');
+            });
         });
 
         // BBCode to HTML conversion function
