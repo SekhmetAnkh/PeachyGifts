@@ -169,13 +169,9 @@
                 $("#characterCount").text(`${characterCount} / ${limit}`);
 
                 let html = inputCode
-                    // Handle BBCode style tags
-                    .replace(/\[b\]([\s\S]*?)\[\/b\]/g, '<strong>$1</strong>')
-                    .replace(/\[i\]([\s\S]*?)\[\/i\]/g, '<em>$1</em>')
-                    .replace(/\[color=([^\]]+)\]([\s\S]*?)\[\/color\]/g, '<span style="color:$1">$2</span>')
-                    .replace(/\[size=([^\]]+)\]([\s\S]*?)\[\/size\]/g, '<span style="font-size:$1px">$2</span>')
-                    // Handle HTML style tags
+                    // Handle HTML style color tags
                     .replace(/<color=([^>]+)>([\s\S]*?)<\/color>/g, '<span style="color:$1">$2</span>')
+                    // Handle other HTML style tags if needed
                     .replace(/<size=([^>]+)>([\s\S]*?)<\/size>/g, '<span style="font-size:$1px">$2</span>');
 
                 html = wrapLongWords(html, 57);
@@ -248,6 +244,7 @@
                     } else {
                         this.value += text;
                     }
+                    $(this).trigger('input'); // Trigger input event to update parsed output
                 });
             };
 
@@ -287,7 +284,7 @@
             $('#colorButton').on('click', function() {
                 let color = prompt('Enter a color (e.g., red, #FF0000):');
                 if (color) {
-                    $('#codeInput').insertAtCaret(`[color=${color}]` + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '[/color]');
+                    $('#codeInput').insertAtCaret(`<color=${color}>` + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '</color>');
                 }
             });
 
