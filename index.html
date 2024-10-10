@@ -96,6 +96,60 @@
             word-wrap: break-word;
             margin: 0;
         }
+        #giftPreviewContainer {
+          position: relative;
+          width: 494px;
+          height: 547px;
+          margin: 20px auto;
+        }
+
+        #giftImage {
+          background-image: url("/path/to/gift1.png");
+          width: 494px;
+          height: 547px;
+          display: inline-block;
+        }
+
+        #giftParsedForm {
+          position: relative;
+          height: 502px !important;
+          top: 40px;
+          left: 8px;
+          width: 480px;
+        }
+
+        .giftParsed {
+          background: transparent !important;
+          border: 0 !important;
+          width: 100%;
+          height: 480px;
+          overflow-y: scroll !important;
+          resize: none !important;
+          overflow-wrap: break-word;
+          white-space: pre-wrap;
+          background: url("/path/to/gift2.png") !important;
+          background-attachment: local !important;
+          background-repeat: no-repeat  !important;
+          text-align: center;
+          padding-top: 253px;
+        }
+
+        .giftFont {
+          line-height: 1.2;
+        }
+
+        .profilefont {
+          font-family: Arial, sans-serif;
+          color: #fff;
+          font-size: 14px;
+          word-spacing: -0.06rem;
+          text-shadow: #6b6b6b 0 0 0.1em;
+        }
+
+        .overflow {
+          overflow-wrap: break-word;
+          white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
@@ -132,6 +186,16 @@
             </div>
         </div>
     </div>
+    <!-- Add this inside your main container -->
+    <div id="giftPreviewContainer" style="display: none;">
+      <div id="giftImage">
+        <form id="giftParsedForm">
+          <div class="form-group">
+            <pre id="giftParsed" class="giftParsed profilefont overflow giftFont"></pre>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -144,29 +208,26 @@
             }
 
             function updateParsed() {
-                const inputCode = $("#codeInput").val();
-                const byteCount = getByteLength(inputCode);
-                const characterCount = inputCode.length;
-                $("#characterCount").text(`${characterCount} (${byteCount} bytes) / ${BYTE_LIMIT}`);
-
-                let html = inputCode
-                    .replace(/<color=(#?\w+)>/g, '<span style="color:$1">')
-                    .replace(/<\/color>/g, '</span>')
-                    .replace(/<size=(\d+)>/g, function(match, size) {
-                        size = Math.min(Math.max(parseInt(size), 1), 100);
-                        return `<span style="font-size:${size}px">`;
-                    })
-                    .replace(/<\/size>/g, '</span>')
-                    .replace(/\n/g, '<br>');
-
-                $("#parsedOutput").html(html);
+                var profileCode = $("#codeInput").val();
+                var characterCount = getByteLength(profileCode);
+                
+                profileCode = profileCode.replace(/[\n\r]/g, '<br>');
+                
+                var html = bbcodeParser.bbcodeToHtml(profileCode);
+                
+                var warningDiv = $("#warnings");
+                warningDiv.html('');
+                
+                // ... (keep the warning checks as they are)
+                
                 $("#profileParsed").html(html);
-                $("#profileParsedValidation").text(inputCode);
-
-                if (byteCount > BYTE_LIMIT) {
-                    $("#warnings").html('Byte limit exceeded! Some characters may be cut off in-game.');
+                $("#giftParsed").html(html);
+                
+                $("#characterCount").html(characterCount + ' (' + characterCount + ' bytes) / ' + BYTE_LIMIT);
+                if (characterCount > BYTE_LIMIT) {
+                    $("#characterCount").css('color', 'red');
                 } else {
-                    $("#warnings").html('');
+                    $("#characterCount").css('color', '');
                 }
             }
 
@@ -245,6 +306,21 @@
             createSymbolsMenu();
             updateParsed();
         });
+
+        // BBCode to HTML conversion function
+        var bbcodeParser = {
+            bbcodeToHtml: function(str) {
+                var html = str;
+
+                html = html.replace(/\[i\](.*?)\[\/i\]/ig, '<i>$1</i>');
+                html = html.replace(/\[b\](.*?)\[\/b\]/ig, '<b>$1</b>');
+                html = html.replace(/\[u\](.*?)\[\/u\]/ig, '<u>$1</u>');
+                html = html.replace(/\[color=([#a-z0-9]+)\](.*?)\[\/color\]/ig, '<span style="color: $1;">$2</span>');
+                html = html.replace(/\[size=([0-9]+)\](.*?)\[\/size\]/ig, '<span style="font-size: $1px;">$2</span>');
+
+                return html;
+            }
+        };
     </script>
 </body>
 </html>
