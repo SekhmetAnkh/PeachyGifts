@@ -12,6 +12,13 @@
             padding: 0.375rem 0.75rem;
             min-height: 300px;
         }
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -20,7 +27,8 @@
         <div class="row">
             <div class="col-6" id="main1">
                 <form id="profileCodeForm">
-                    <textarea placeholder="Paste your current profile code in here if desired" class="form-control" rows="22" id="profileCode" name="profiletext" spellcheck="false"></textarea>
+                    <textarea placeholder="Paste your current profile code in here if desired" class="form-control" rows="22" id="profileCode" name="profiletext" spellcheck="false" maxlength="1000"></textarea>
+                    <div id="charCount" class="text-muted mt-2">Characters: 0 / 1000</div>
                 </form>
             </div>
             <div class="col-6">
@@ -34,10 +42,25 @@
     <script>
         const profileCode = document.getElementById('profileCode');
         const previewContainer = document.getElementById('previewContainer');
+        const charCount = document.getElementById('charCount');
 
-        profileCode.addEventListener('input', function() {
-            previewContainer.innerHTML = this.value;
-        });
+        function updatePreview() {
+            let content = profileCode.value;
+            let charLength = content.length;
+            charCount.textContent = `Characters: ${charLength} / 1000`;
+
+            // Replace hex color codes with color previews
+            content = content.replace(/#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})/g, function(match) {
+                return `<span class="color-preview" style="background-color: ${match};"></span>${match}`;
+            });
+
+            previewContainer.innerHTML = content;
+        }
+
+        profileCode.addEventListener('input', updatePreview);
+
+        // Initial update
+        updatePreview();
     </script>
 </body>
 </html>
