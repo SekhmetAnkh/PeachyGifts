@@ -143,6 +143,7 @@
                 html = wrapLongWords(html, 57);
                 html = html.replace(/\n/g, '<br>');
 
+                // Sanitize the HTML to prevent XSS attacks
                 const sanitizedHtml = DOMPurify.sanitize(html, {ALLOW_UNKNOWN_PROTOCOLS: true});
 
                 $("#parsedOutput").html(sanitizedHtml);
