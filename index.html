@@ -213,20 +213,19 @@
                 $('body').append(symbolsHtml);
             }
 
-            $.fn.insertAtCaret = function(before, after) {
+            $.fn.insertAtCaret = function(text) {
                 return this.each(function() {
                     if (document.selection) {
                         this.focus();
                         var sel = document.selection.createRange();
-                        sel.text = before + sel.text + after;
+                        sel.text = text;
                     } else if (this.selectionStart || this.selectionStart === 0) {
                         var startPos = this.selectionStart;
                         var endPos = this.selectionEnd;
-                        this.value = this.value.substring(0, startPos) + before + this.value.substring(startPos, endPos) + after + this.value.substring(endPos);
-                        this.selectionStart = startPos + before.length;
-                        this.selectionEnd = endPos + before.length;
+                        this.value = this.value.substring(0, startPos) + text + this.value.substring(endPos);
+                        this.selectionStart = this.selectionEnd = startPos + text.length;
                     } else {
-                        this.value += before + after;
+                        this.value += text;
                     }
                 });
             };
@@ -257,24 +256,24 @@
             });
 
             $('#boldButton').on('click', function() {
-                $('#codeInput').insertAtCaret('[b]', '[/b]');
+                $('#codeInput').insertAtCaret('[b]' + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '[/b]');
             });
 
             $('#italicButton').on('click', function() {
-                $('#codeInput').insertAtCaret('[i]', '[/i]');
+                $('#codeInput').insertAtCaret('[i]' + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '[/i]');
             });
 
             $('#colorButton').on('click', function() {
                 let color = prompt('Enter a color (e.g., red, #FF0000):');
                 if (color) {
-                    $('#codeInput').insertAtCaret(`[color=${color}]`, '[/color]');
+                    $('#codeInput').insertAtCaret(`[color=${color}]` + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '[/color]');
                 }
             });
 
             $('#sizeButton').on('click', function() {
                 let size = prompt('Enter a size in pixels:');
                 if (size) {
-                    $('#codeInput').insertAtCaret(`[size=${size}]`, '[/size]');
+                    $('#codeInput').insertAtCaret(`[size=${size}]` + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '[/size]');
                 }
             });
 
