@@ -143,6 +143,7 @@
                 html = wrapLongWords(html, 57);
                 html = html.replace(/\n/g, '<br>');
 
+                // Use .html() instead of .text() to properly interpret HTML
                 $("#parsedOutput").html(html);
 
                 if (characterCount > limit) {
@@ -230,7 +231,14 @@
             updateMode('profile');
 
             function wrapLongWords(str, maxWidth) {
-                return str.replace(new RegExp(`(?![^\\n]{1,${maxWidth}}$)([^\\n]{1,${maxWidth}})\\s`, 'g'), '$1\n');
+                const regex = new RegExp(`(?![^\\n]{1,${maxWidth}}$)([^\\n]{1,${maxWidth}})\\s`, 'g');
+                return str.replace(regex, (match, p1) => {
+                    // Don't wrap inside HTML tags
+                    if (/<[^>]*$/.test(p1)) {
+                        return match;
+                    }
+                    return p1 + '\n';
+                });
             }
         });
     </script>
