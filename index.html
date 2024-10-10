@@ -136,25 +136,14 @@
                 $("#characterCount").text(`${characterCount} / ${limit}`);
 
                 let html = inputCode
-                    .replace(/<color=(#?\w+)>/g, '<span data-color="$1">')
+                    .replace(/<color=(#?\w+)>/g, '<span style="color:$1">')
                     .replace(/<\/color>/g, '</span>')
-                    .replace(/<size=([^>]+)>([\s\S]*?)<\/size>/g, '<span data-size="$1">$2</span>');
+                    .replace(/<size=([^>]+)>([\s\S]*?)<\/size>/g, '<span style="font-size:$1px">$2</span>');
 
                 html = wrapLongWords(html, 57);
                 html = html.replace(/\n/g, '<br>');
 
-                // Sanitize the HTML to prevent XSS attacks
-                const sanitizedHtml = DOMPurify.sanitize(html, {ALLOW_UNKNOWN_PROTOCOLS: true});
-
-                $("#parsedOutput").html(sanitizedHtml);
-
-                // Apply styles after sanitization
-                $("#parsedOutput [data-color]").each(function() {
-                    $(this).css('color', $(this).data('color'));
-                });
-                $("#parsedOutput [data-size]").each(function() {
-                    $(this).css('font-size', $(this).data('size') + 'px');
-                });
+                $("#parsedOutput").html(html);
 
                 if (characterCount > limit) {
                     $("#warnings").html('Character limit exceeded!');
