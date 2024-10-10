@@ -77,26 +77,16 @@
             margin: 20px auto;
             overflow: hidden;
         }
-        #giftBackground1, #giftBackground2 {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        #giftBackground2 {
-            opacity: 0.5; /* Adjust as needed */
-        }
         #giftImage {
-            position: absolute;
-            top: 0;
-            left: 0;
+            background-image: url('path/to/gift1.png');
             width: 100%;
             height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         #giftParsedForm {
-            position: absolute; /* Change from relative to absolute */
+            position: absolute;
             height: 502px !important;
             top: 40px;
             left: 8px;
@@ -107,15 +97,15 @@
             border: 0 !important;
             width: 100%;
             height: 480px;
-            overflow-y: auto !important; /* Change from scroll to auto */
+            overflow-y: auto !important;
             resize: none !important;
             overflow-wrap: break-word;
             white-space: pre-wrap;
-            background: url("https://3dxchat-status.com/image/gift2.png?12") no-repeat center !important;
+            background: url('path/to/gift2.png') no-repeat center !important;
             background-size: contain !important;
             text-align: center;
             padding-top: 253px;
-            box-sizing: border-box; /* Add this line */
+            box-sizing: border-box;
         }
         .giftFont {
             line-height: 1.2;
@@ -143,9 +133,9 @@
         }
         .style-2::-webkit-scrollbar-thumb {
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-            background-image: url("https://3dxchat-status.com/image/scrollbar_icon.png?12");
-            background-position: center, center;
-            background-repeat: no-repeat, no-repeat;
+            background-image: url('path/to/scrollbar_icon.png');
+            background-position: center;
+            background-repeat: no-repeat;
             background-color: #2e3d42;
         }
         .style-2::-webkit-scrollbar-thumb:hover {
@@ -172,7 +162,6 @@
                 </div>
                 <div class="col-md-6">
                     <div id="giftPreviewContainer">
-                        <img id="giftBackground1" src="https://3dxchat-status.com/image/gift1.png?12" alt="Gift Background 1">
                         <div id="giftImage">
                             <form id="giftParsedForm">
                                 <div class="form-group">
@@ -180,7 +169,6 @@
                                 </div>
                             </form>
                         </div>
-                        <img id="giftBackground2" src="https://3dxchat-status.com/image/gift2.png?12" alt="Gift Background 2">
                     </div>
                 </div>
             </div>
