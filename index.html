@@ -1,59 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>3DXChat status - Profile text creator</title>
-    <link rel="icon" type="image/png" href="image/_favicon.png" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/custom.css">
-    <link rel="stylesheet" href="css/Chart.min.css">
-</head>
-<body class="text-white">
-    <script src="js/jquery-3.5.1.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/Chart.bundle_294.min.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <title>3DXChat status - Profile text creator</title>
 
+            <link rel="icon" type="image/png" href="/image/_favicon.png?12" />
+
+        <link rel="stylesheet" href="/css/bootstrap.min.css?12">
+        <link rel="stylesheet" href="/css/custom.css?12">
+        <link rel="stylesheet" href="/css/Chart.min.css?12">
+
+            </head>
+    <body class="text-white">
+    <script src="/js/jquery-3.5.1.min.js?12" ></script>
+    <script src="/js/bootstrap.bundle.min.js?12"></script>
+    <script src="/js/Chart.bundle_294.min.js?12"></script>
+
+    
+
+    <script type="text/javascript">
+
+        function gradientColor(stat)
+        {
+            if (stat <= 94  )return '#dc3545';
+            else if (stat <= 95  )return '#D36132';
+            else if (stat <= 96  )return '#CA9830';
+            else if (stat <= 97  )return '#B7C12E';
+            else if (stat <= 98  )return '#8ab834';
+            else if (stat < 100  )return '#2ba26c';
+            else if (stat === 100)return '#198754';
+
+        }
+
+        function timeDifferenceWithEpoch(currentEpoch, previousEpoch)
+        {
+            var now = new Date(currentEpoch * 1000);
+            var updated = new Date(previousEpoch * 1000);
+
+            return timeDifference(now,updated);
+        }
+
+        function timeDifferenceInSeconds(current,previous)
+        {
+            return (current - previous) / 1000;
+        }
+
+        function timeDifference(current, previous) {
+
+            var value = 0;
+
+            var msPerMinute = 60 * 1000;
+            var msPerHour = msPerMinute * 60;
+            var msPerDay = msPerHour * 24;
+            var msPerMonth = msPerDay * 30;
+            var msPerYear = msPerDay * 365;
+
+            var elapsed = current - previous;
+
+            if (elapsed < msPerMinute) {
+
+                value = Math.round(elapsed/1000);
+
+                if (value === 1)
+                {
+                    return value + ' second ago';
+                }
+                else
+                {
+                    return value + ' seconds ago';
+                }
+
+            }
+
+            else if (elapsed < msPerHour) {
+
+                value = Math.round(elapsed/msPerMinute);
+
+                if (value === 1)
+                {
+                    return value + ' minute ago';
+                }
+                else
+                {
+                    return value + ' minutes ago';
+                }
+            }
+
+            else if (elapsed < msPerDay ) {
+
+                value = Math.round(elapsed/msPerHour );
+
+                if (value === 1)
+                {
+                    return  value + ' hour ago';
+                }
+                else
+                {
+                    return  value + ' hours ago';
+                }
+            }
+            else if (elapsed < msPerMonth) {
+
+                value = Math.round(elapsed/msPerDay);
+
+                if (value === 1)
+                {
+                    return value + ' day ago';
+                }
+                else
+                {
+                    return value + ' days ago';
+                }
+            }
+            else if (elapsed < msPerYear) {
+
+                value = Math.round(elapsed/msPerMonth);
+
+                if (value === 1)
+                {
+                    return 'approximately ' + value + ' month ago';
+                }
+                else
+                {
+                    return 'approximately ' + value + ' months ago';
+                }
+            }
+            else {
+
+                value = Math.round(elapsed/msPerYear );
+
+                if (value === 1)
+                {
+                    return 'approximately ' + value + ' year ago';
+                }
+                else
+                {
+                    return 'approximately ' + value + ' years ago';
+                }
+
+
+            }
+        }
+
+    </script>
+
+    
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/index">
-                    <img src="image/3dxchat.png" height="30" class="d-inline-block align-top" alt="">
-                    Service status
-                </a>
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse" id="navbarCollapse">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/statistics">Statistics</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/outages">Outages</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/selftest">Self test</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/discord">Discord bot</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/profile-editor">Profile editor</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
-                                <li><a class="dropdown-item" href="/embed">Embed</a></li>
-                                <li><a class="dropdown-item" target="_blank" href="https://3dxforum.com/index.php?/topic/11021-see-current-3dxchat-server-status/">Support</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+            <a class="navbar-brand" href="/index">
+                <img src="/image/3dxchat.png?12" height="30" class="d-inline-block align-top" alt="">
+                Service status
+            </a>
+
+            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarCollapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/statistics">Statistics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/outages">Outages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/selftest">Self test</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/discord">Discord bot</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/profile-editor">Profile editor</a>
+                    </li>
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown01">
+                            <li><a class="dropdown-item" href="/embed">Embed</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="https://3dxforum.com/index.php?/topic/11021-see-current-3dxchat-server-status/">Support</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
                 <div class="collapse navbar-collapse text-right" id="myNavbar">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
@@ -66,111 +200,2100 @@
     </header>
 
     <main role="main" class="container">
-        <h2>Profile / Gift editor</h2>
-        <p class="lead">Use this tool to spice up your 3DXChat profile and gifts with ease!</p>
-        <hr class="my-4">
 
-        <div class="row">
-            <div class="col-2">
-            </div>
-            <div class="col-10 text-right" style="min-height:40px;">
-                <div id="presets" class="btn-toolbar" role="toolbar" aria-label="Example toolbar">
-                    <div class="btn-group" role="group" data-bs-toggle="tooltip" data-placement="left" title="Load a preset here">
-                        <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,1);">1</button>
-                        <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,2);">2</button>
-                        <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,3);">3</button>
-                        <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,4);">4</button>
-                        <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,5);">5</button>
+   
+    <style type="text/css">
+
+        #profileImage {
+            background-image: url("/image/profile.png?12");
+            width: 494px;
+            height: 547px;
+            display: inline-block;
+        }
+
+
+        #giftImage {
+            background-image: url("/image/gift1.png?12");
+            width: 494px;
+            height: 547px;
+            display: inline-block;
+        }
+
+        #profileParsedForm {
+            position: relative;
+            height: 343px !important;
+            top: 215px;
+            left: 8px;
+            width: 480px;
+        }
+
+        #relativeTest {
+            position: relative;
+        }
+
+        #errorDialog {
+            position: absolute;
+            top: 30px;
+            left: 70px;
+            text-align: center;
+            z-index: 999;
+            display: none;
+        }
+
+        #giftParsedForm {
+            position: relative;
+            height: 502px !important;
+            top: 40px;
+            left: 8px;
+            width: 480px;
+        }
+
+        .profileParsed {
+            background: transparent !important;
+            border: 0 !important;
+            width: 100%;
+            height: 305px;
+            overflow-y: scroll !important;
+            resize: none !important; /* Remove this if you want the user to resize the textarea */
+            overflow-wrap: break-word;
+            white-space:pre-wrap;
+            tab-size: 2;
+        }
+
+        .giftParsed {
+            background: transparent !important;
+            border: 0 !important;
+            width: 100%;
+            height: 480px;
+            overflow-y: scroll !important;
+            resize: none !important; /* Remove this if you want the user to resize the textarea */
+            overflow-wrap: break-word;
+            white-space:pre-wrap;
+            background: url("/image/gift2.png?12") !important;
+            background-attachment: local !important;
+            background-repeat: no-repeat  !important;
+            text-align: center;
+            padding-top: 253px;
+        }
+
+        .overflow {
+            overflow-wrap: break-word;
+            white-space:pre-wrap;
+        }
+
+        .profilefont {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            font-size: 14px;
+            /* letter-spacing: 0.020rem; */
+            word-spacing: -0.06rem;
+            text-shadow: #6b6b6b 0 0 0.1em;
+        }
+
+        .giftFont {
+            line-height: 1.2;
+        }
+
+        #profileCode {
+            border: 0 !important;
+            width: 100%;
+            height: 550px;
+            overflow-y: scroll !important;
+            resize: none !important; /* Remove this if you want the user to resize the textarea */
+            font-family: monospace, serif;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 100px;
+            height: 32px;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+        }
+
+        .style-2::-webkit-scrollbar-track
+        {
+            background-color: #1c2226;
+        }
+
+        .style-2::-webkit-scrollbar
+        {
+            width: 20px;
+            background-color: #1c2226;
+        }
+
+        .style-2 {
+            overflow-x: hidden !important;
+        }
+
+        .style-2::-webkit-scrollbar-thumb
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-image: url("/image/scrollbar_icon.png?12");
+            background-position: center, center;
+            background-repeat: no-repeat, no-repeat;
+            background-color: #2e3d42;
+        }
+
+        .style-2::-webkit-scrollbar-thumb:hover
+        {
+            background-color: #425a63;
+        }
+
+        .optIcons b
+        {
+            cursor: pointer;
+        }
+
+        .btn-group.special {
+            display: flex;
+        }
+
+        .special .btn {
+            flex: 1
+        }
+
+    </style>
+
+
+    <div class="modal fade" id="colorModal" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="colorModalLabel">Pick a color</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="colorpicker" class="align-middle">Click this box to choose a color</label>
+                        <BR>
+                        <input name="colorpicker" class="align-middle" type="color" value="#ff0000" id="colorPicker">
+                        <p></p>
+                        <h5>Predefined colors</h5>
+                        <ul>
+                            <li style="font-weight: bold; color: #4ec0ef; cursor: pointer;" onclick="$('#colorPicker').val('#4ec0ef')">Male color</li>
+                            <li style="font-weight: bold; color: #ff0d87; cursor: pointer;" onclick="$('#colorPicker').val('#ff0d87')">Female color</li>
+                            <li style="font-weight: bold; color: #997bb9; cursor: pointer;" onclick="$('#colorPicker').val('#997bb9')">/me color</li>
+                        </ul>
+
                     </div>
-                    &nbsp;
-                    <div class="btn-group" role="group" data-bs-toggle="tooltip" data-placement="right" title="Use %username% and %extra% as placeholders">
-                        <button type="button" class="btn btn-secondary" onclick="massGiftGenerator();">Mass gift generator</button>
-                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="colorModalButton" type="button" class="btn btn-secondary">Proceed</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col-2">
-                <div class="d-grid gap-2">
-                    <div class="btn-group-vertical" role="group" aria-label="Basic example">
-                        <button id="profileButton" type="button" class="btn btn-primary" onclick="activateProfile();" disabled>Profile preview</button>
-                        <button id="giftButton" type="button" class="btn btn-primary" onclick="activateGift();">Gift preview</button>
-                        <button id="fontButton" type="button" class="btn btn-info" onclick="activateFontHelper();">Fonts</button>
-                    </div>
-                    <div id="buttonGroup" class="btn-group-vertical" role="group" aria-label="Profile helper buttons">
-                        <button id="undoButton" type="button" class="btn btn-block btn-warning mb-1">← Undo</button>
-                        <button id="boldButton" type="button" class="btn btn-block btn-secondary mb-1"><strong>Bold</strong></button>
-                        <button id="italicButton" type="button" class="btn btn-block btn-secondary mb-1"><em>Italic</em></button>
-                        <button id="colorButton" type="button" class="btn btn-block btn-secondary mb-1" style="color: hotpink;">Color</button>
-                        <button id="gradientButton" type="button" class="btn btn-block btn-secondary mb-1"><span style="color: #ffdfdf;">G</span><span style="color: #ffbfbf;">r</span><span style="color: #ff9f9f;">a</span><span style="color: #ff7f7f;">d</span><span style="color: #ff5f5f;">i</span><span style="color: #ff3f3f;">e</span><span style="color: #ff1f1f;">n</span><span style="color: #ff0000;">t</span></button>
-                        <button id="sizeButton" type="button" class="btn btn-secondary mb-1 p-0" style="font-size: 1.3em">Size</button>
-                        <button id="symbolsButton" type="button" class="btn btn-secondary mb-1">Symbols <span style="font-family: monospace;">❤</span></button>
-                        <button id="flagsButton" type="button" class="btn btn-secondary mb-1">Flags <span style="font-size: 10px; color: #4A9753;">█</span><span style="font-size: 10px; color: #f2fdff;">█</span><span style="font-size: 10px; color: #ff3b3b;">█</span></button>
-                    </div>
+    <div class="modal fade" id="gradientModal" tabindex="-1" role="dialog" aria-labelledby="gradientModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gradientModalLabel">Create a gradient</h5>
                 </div>
-                <hr class="my-2">
-                <div class="text-center" id="characterCountDiv">
-                    Characters
-                    <div class="mb-3" id="characterCount">0 / 1000</div>
-                    Warnings
-                    <div id="warnings" style="color: yellow; font-size: 0.6em;"></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="colorpicker1" class="align-middle">Click this box to choose start color</label>
+                        <BR>
+                        <input name="colorpicker1" class="align-middle" type="color" value="#ffffff" id="colorPicker1" onchange="updateGradient();">
+                        <p></p>
+                        <label for="colorpicker2" class="align-middle">Click this box to choose end color</label>
+                        <BR>
+                        <input name="colorpicker2" class="align-middle" type="color" value="#ff0000" id="colorPicker2" onchange="updateGradient();">
+                    </div>
+
+                    <div>
+                        <input type="radio" id="gradientPerLetter" name="gradientType" value="word" onchange="updateGradient();" >
+                        <label for="gradientPerLetter">Per letter</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="gradientPerWord" name="gradientType" value="letter" onchange="updateGradient();" checked >
+                        <label for="gradientPerWord">Per word</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="gradientPerLine" name="gradientType" value="line" onchange="updateGradient();" >
+                        <label for="gradientPerLine">Per line</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="gradientPerParagraph" name="gradientType" value="paragraph" onchange="updateGradient();" >
+                        <label for="gradientPerParagraph">Per paragraph</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="gradientOnlyMiddle" name="gradientType" value="paragraph" onchange="updateGradient();" >
+                        <label for="gradientOnlyMiddle">Gradient only middle part (<span class="link" data-bs-toggle="tooltip"" data-bs-html="true" title="Useful for a nice gradient effect but without using a lot of characters (Works for letter and word gradients)">?</span>)</label>
+                    </div>
+
+                    <label for="gradientPreview" class="align-middle">Preview</label>
+                    <div class="p-3" style="background-color: #1a2125;" id="gradientPreview">
+                        fdfd
+                    </div>
+
+                    <label for="gradientTextarea" class="align-middle">Generated code (<span id="gradientCharacterCount">1</span> characters)</label>
+                    <div>
+                        <textarea id="gradientTextarea" style="width: 100%;"></textarea>
+                    </div>
+
+                    Characters used in <span id="previewType"></span> (calculated)<BR>
+                    <span id="newCharacterCount">?</span>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="gradientModalButton" type="button" class="btn btn-secondary">Proceed</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
-            <div class="col-6" id="main1">
-                <form id="profileCodeForm">
-                    <textarea placeholder="Paste your current profile code in here if desired" class="form-control" rows="22" id="profileCode" name="profiletext" spellcheck="false"></textarea>
-                </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="sizeModal" tabindex="-1" role="dialog" aria-labelledby="sizeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sizeModalLabel">Pick a size</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <span class="profilefont" style="cursor: pointer; background-color: #1c2226; font-size: 10px;" onclick="pickSize(10)">Small</span><BR>
+                        <span class="profilefont" style="cursor: pointer; background-color: #1c2226; font-size: 20px;" onclick="pickSize(20)">Medium</span><BR>
+                        <span class="profilefont" style="cursor: pointer; background-color: #1c2226; font-size: 30px;" onclick="pickSize(30)">Large</span><BR>
+                        <span class="profilefont" style="cursor: pointer; background-color: #1c2226; font-size: 40px;" onclick="pickSize(40)">Huge</span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="colorModalButton" type="button" class="btn btn-secondary">Proceed</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
             </div>
-            <div class="col-4" id="main2">
-                <div id="relativeTest">
-                    <div id="errorDialog" style="display: none;">
-                        <div class="alert alert-danger p-1 pulse" role="alert">
-                            There are errors, it won't work properly in 3DXChat!<br>See details on the bottom left.
+        </div>
+    </div>
+
+    <h2>Profile / Gift editor</h2>
+    <p class="lead">Use this tool to spice up your 3DXChat profile and gifts with ease!</p>
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-10 text-right" style="min-height:40px;">
+
+            <div id="presets" class="btn-toolbar" role="toolbar" aria-label="Example toolbar">
+                <div class="btn-group" role="group" data-bs-toggle="tooltip"" data-placement="left" title="Load a preset here">
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,1);">1</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,2);">2</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,3);">3</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,4);">4</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadPreset(previewType,5);">5</button>
+                </div>
+               &nbsp;
+
+                <div class="btn-group" role="group" data-bs-toggle="tooltip" data-placement="right" title="Use %username% and %extra% as placeholders">
+                    <button type="button" class="btn btn-secondary" onclick="massGiftGenerator();">Mass gift generator</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+
+            <div class="d-grid gap-2">
+
+            <div class="btn-group-vertical" role="group" aria-label="Basic example">
+                <button id="profileButton" type="button" class="btn btn-primary" onclick="activateProfile();" disabled>Profile preview</button>
+                <button id="giftButton" type="button" class="btn btn-primary" onclick="activateGift();">Gift preview</button>
+                <button id="fontButton" type="button" class="btn btn-info" onclick="activateFontHelper();">Fonts</button>
+            </div>
+
+            <div id="buttonGroup" class="btn-group-vertical" role="group" aria-label="Profile helper buttons">
+                <button id="undoButton" type="button" class="btn btn-block btn-warning mb-1">← Undo</button>
+                <button id="boldButton" type="button" class="btn btn-block btn-secondary mb-1"><strong>Bold</strong></button>
+                <button id="italicButton" type="button" class="btn btn-block btn-secondary mb-1"><em>Italic</em></button>
+                <button id="colorButton" type="button" class="btn btn-block btn-secondary mb-1" style="color: hotpink;">Color</button>
+                <button id="gradientButton" type="button" class="btn btn-block btn-secondary mb-1"><span style="color: #ffdfdf;">G</span><span style="color: #ffbfbf;">r</span><span style="color: #ff9f9f;">a</span><span style="color: #ff7f7f;">d</span><span style="color: #ff5f5f;">i</span><span style="color: #ff3f3f;">e</span><span style="color: #ff1f1f;">n</span><span style="color: #ff0000;">t</span></button>
+                <button id="sizeButton" type="button" class="btn btn-secondary mb-1 p-0" style="font-size: 1.3em">Size</button>
+                <button id="symbolsButton" type="button" class="btn btn-secondary mb-1">Symbols <span style="font-family: monospace;">❤</span></button>
+                <button id="flagsButton" type="button" class="btn btn-secondary mb-1">Flags <span style="font-size: 10px; color: #4A9753;">█</span><span style="font-size: 10px; color: #f2fdff;">█</span><span style="font-size: 10px; color: #ff3b3b;">█</span></button>
+            </div>
+
+            </div>
+
+            <hr class="my-2">
+
+            <div class="text-center" id="characterCountDiv">
+                Characters
+                <div class="mb-3" id="characterCount">0 / 1000</div>
+
+                Warnings
+                <div id="warnings" style="color: yellow; font-size: 0.6em;"></div>
+            </div>
+
+        </div>
+    <div class="col-6" id="main1">
+
+        <form id="profileCodeForm">
+                <textarea placeholder="Paste your current profile code in here if desired" class="form-control" rows="22"  id="profileCode" name="profiletext" spellcheck="false"></textarea>
+        </form>
+
+    </div>
+    <div class="col-4" id="main2">
+
+        <div id="relativeTest">
+
+        <div id="errorDialog">
+            <div class="alert alert-danger p-1 pulse" role="alert">
+                There are errors, it won't work properly in 3DXChat!<BR>See details on the bottom left.
+            </div>
+        </div>
+
+        <div id="profileImage" class="m-0 " style="z-index: -50;">
+            <form id="profileParsedForm">
+                <div class="form-group">
+                    <label for="profileParsed"></label>
+                    <div class="style-2">
+                        <pre id="profileParsed" class="style-2 profileParsed profilefont"></pre>
+                        <pre id="profileParsedValidation" style="display:none;"></pre>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="giftImage" class="m-0" style="display: none; z-index: -50;">
+            <form id="giftParsedForm">
+                <div class="form-group">
+                    <label for="giftParsed"></label>
+                    <div class="style-2 giftParsed">
+                        <pre id="giftParsed" class="style-2 profilefont overflow giftFont"></pre>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        </div>
+
+
+
+    </div>
+        <div class="col-10" id="main3" style="display: none;">
+
+            <form id="fontForm">
+                <label for="inputText">Input text</label>
+                <div class="form-row mb-3">
+                    <input class="form-control" id="inputText" type="text" placeholder="Type in your text here...." />
+                </div>
+
+                <label for="fontSmallCaps">sᴍᴀʟʟ ᴄᴀᴘs</label>
+                <div class="form-row mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="fontSmallCaps">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="fontSmallCapsCopyButton" onclick="copyToClipBoard('fontSmallCaps')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                            </div>
+                        </div>
+                </div>
+
+                <label for="fontMirrored">dɘɿoɿɿiM (<span class="link" data-bs-toggle="tooltip"" data-bs-html="true" title="Some characters don't work in 3DXChat: B, G, L">?</span>)</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontMirrored">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontMirroredCopyButton" onclick="copyToClipBoard('fontMirrored')" onmouseout="this.innerHTML = 'copy'">copy</button>
                         </div>
                     </div>
-                    <div id="profileImage" class="m-0" style="z-index: -50;">
-                        <form id="profileParsedForm">
-                            <div class="form-group">
-                                <label for="profileParsed"></label>
-                                <div class="style-2">
-                                    <pre id="profileParsed" class="style-2 profileParsed profilefont"></pre>
-                                    <pre id="profileParsedValidation" style="display:none;"></pre>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="giftImage" class="m-0" style="display: none; z-index: -50;">
-                        <form id="giftParsedForm">
-                            <div class="form-group">
-                                <label for="giftParsed"></label>
-                                <div class="style-2 giftParsed">
-                                    <pre id="giftParsed" class="style-2 profilefont overflow giftFont"></pre>
-                                </div>
-                            </div>
-                        </form>
+                </div>
+
+                <label for="fontFlipped">pǝppılℲ (<span class="link" data-bs-toggle="tooltip"" data-bs-html="true" title="Some characters don't work in 3DXChat: B, D, G, N, Y">?</span>)</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontFlipped">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontFlippedCopyButton" onclick="copyToClipBoard('fontFlipped')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
                     </div>
                 </div>
+
+                <label for="fontSlashed">̷S̷l̷a̷s̷h̷e̷d</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontSlashed">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontSlashedCopyButton" onclick="copyToClipBoard('fontSlashed')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontBent">βҽղէ (<span class="link" data-bs-toggle="tooltip"" data-bs-html="true" title="For best results, use lower case only">?</span>)</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontBent">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontBentCopyButton" onclick="copyToClipBoard('fontBent')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontJapanese">丁卂尸卂𠘨乇丂乇</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontJapanese">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontJapaneseCopyButton" onclick="copyToClipBoard('fontJapanese')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontCircled">Ⓒⓘⓡⓒⓛⓔⓓ</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontCircled">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontCircledCopyButton" onclick="copyToClipBoard('fontCircled')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontUnderlined">F͟o͟n͟t͟ ͟u͟n͟d͟e͟r͟l͟i͟n͟e͟d͟</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontUnderlined">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontUnderlinedCopyButton" onclick="copyToClipBoard('fontUnderlined')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontCurly">ƈʊʀʟʏ ȶɛӼȶ</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontCurly">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontCurlyCopyButton" onclick="copyToClipBoard('fontCurly')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontHebrew">Hebrew</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontHebrew">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontHebrewCopyButton" onclick="copyToClipBoard('fontHebrew')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontYoda">Yoda</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontYoda">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontYodaCopyButton" onclick="copyToClipBoard('fontYoda')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontHieroglyph">Hieroglyph</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontHieroglyph">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontHieroglyphCopyButton" onclick="copyToClipBoard('fontHieroglyph')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontDelta">Delta</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontDelta">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontDeltaCopyButton" onclick="copyToClipBoard('fontDelta')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontSuperscript">Superscript</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontSuperscript">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontSuperscriptCopyButton" onclick="copyToClipBoard('fontSuperscript')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontDots">Dots</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontDots">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontDotsCopyButton" onclick="copyToClipBoard('fontDots')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="fontSmeared">Smeared</label>
+                <div class="form-row mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fontSmeared">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="fontSmearedCopyButton" onclick="copyToClipBoard('fontSmeared')" onmouseout="this.innerHTML = 'copy'">copy</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+        </div>
+        <div id="symbols" class="col-10 symbols optIcons profilefont" style="display:none;">
+            <p><strong>Disclaimer:</strong> Not all these icons appear exactly as shown within 3DXChat.</p>
+            <b>™</b> <b>℡</b> <b>№</b> <b>©</b> <b>®</b> <b>@</b> <b>℅</b> <b>“</b> <b>”</b> <b>¶</b> <b>&</b> <b>¿</b> <b>÷</b> <b>-</b> <b>+</b> <b>x</b> <b>￡</b> <b>$</b> <b>§</b> <b>¢</b> <b>ε</b> <b>з</b> <b>♋</b> <b>Ֆ</b> <b>☣</b> <b>☠</b> <b>ж</b> <b>◔</b> <b>◕</b> <b>◑</b> <b>◐</b> <b>⊙</b> <b>◎</b> <b>☉</b> <b>Θ</b> <b>⊙</b> <b>○</b> <b>◯</b> <b>の</b> <b>０</b> <b>●</b> <b>•</b> <b>✆</b> <b>☯</b> <b>☻</b> <b>☺</b> <b>☹</b> <b>◐</b> <b>◑</b> <b>☺</b> <b>☻</b> <b>✠</b> <b>⊕</b> <b>⊗</b> <b>☪</b> <b>☢</b> <b>〄</b> <b>㊈</b> <b>㊉</b> <b>㊊</b> <b>㊋</b> <b>㊌</b> <b>㊍</b> <b>㊎</b> <b>㊏</b> <b>㊐</b> <b>㊑</b> <b>㊒</b> <b>㊓</b> <b>㊔</b> <b>㊕</b> <b>㊖</b> <b>㊗</b> <b>㊀</b> <b>㊁</b> <b>㊂</b>
+
+            <b>㊃</b> <b>㊄</b> <b>㊅</b> <b>㊆</b> <b>㊇</b> <b>㊈</b> <b>㊉</b> <b>㊊</b> <b>の</b> <b>㊣</b> <b>㊚</b> <b>㊛</b> <b>㊝</b> <b>☸</b> <b>❁</b> <b>❀</b> <b>✿</b> <b>✾</b> <b>❃</b> <b>✺</b> <b>❇</b> <b>❈</b> <b>☸</b> <b>❁</b> <b>❀</b> <b>✿</b> <b>✾</b> <b>✺</b> <b>❂</b> <b>✪</b> <b>☮</b> <b>❂</b> <b>Ⓞ</b> <b>ⓞ</b> <b>▲</b> <b>△</b> <b>▼</b> <b>▽</b> <b>►</b> <b>◄</b> <b>▶</b> <b>▷</b> <b>◀</b> <b>◁</b> <b>◢</b> <b>◣</b> <b>◥</b> <b>◤</b> <b>♣</b> <b>♧</b> <b>♠</b> <b>♤</b> <b>♥</b> <b>❤</b> <b>❥</b> <b>♡</b> <b>ღ</b>
+
+            <b>♦</b> <b>♢</b> <b>◊</b> <b>◆</b> <b>◇</b> <b>◈</b> <b>凸</b> <b>Ƹ</b> <b>∑</b> <b>↑</b> <b>↓</b> <b>←</b> <b>→</b> <b>↘</b> <b>↙</b> <b>↖</b> <b>↗</b> <b>↔</b> <b>↕</b> <b>↔</b> <b>➳</b> <b>➽</b> <b>➸</b> <b>⇨</b>
+
+            <b>〠</b> <b>☊</b> <b>☋</b> <b>☌</b> <b>☍</b> <b>℘</b> <b>ℑ</b> <b>ℜ</b> <b>ℵ</b> <b>♏</b> <b>η</b> <b>α</b> <b>Ш</b> <b>∏</b> <b>ζ</b> <b>◠</b> <b>◡</b> <b>✦</b> <b>✧</b> <b>☄</b> <b>❦</b> <b>✌</b> <b>ψ</b> <b>Ψ</b> <b>✄</b> <b>✂</b> <b>✁</b> <b>♫</b> <b>♬</b> <b>♪</b> <b>♩</b> <b>♭</b> <b>♪</b> <b>♂</b> <b>♀</b> <b>☿</b> <b>✈</b> <b>✙</b> <b>✉</b>
+
+            <b>✌</b> <b>✁</b> <b>✎</b> <b>✐</b> <b>۵</b> <b>ʚ</b> <b>ɞ</b> <b>ﺴ</b> <b>♆</b> <b>︻</b> <b>︼</b> <b>o</b> <b>º</b> <b>°</b> <b>◦</b> <b>｡</b> <b>∞</b> <b>±</b> <b>☁</b> <b>Д</b> <b>⊹</b> <b>♒</b> <b>⚜</b> <b>❦</b> <b>＃</b>
+
+            <b>ㄒ</b> <b>⁂</b> <b>✟</b> <b>̡</b> <b>͌</b> <b>l</b> <b>っ</b> <b>つ</b> <b>℃</b> <b>и</b> <b>ノ</b> <b>¯</b> <b>☇</b> <b>_</b> <b>큐</b> <b>あ</b> <b>Þ</b> <b>ð</b> <b>þ</b> <b>Ω</b> <b>μ</b> <b>ﻬ</b> <b>«</b> <b>»</b> <b>✬</b> <b>☃</b> <b>☄</b> <b>ξ</b> <b>∮</b> <b>✓</b> <b>✔</b>
+
+            <b>√</b> <b>≈</b> <b>≌</b> <b>じ</b> <b>Ֆ</b> <b>Д</b> <b>ק</b> <b>웃</b> <b>〒</b> <b>￠</b> <b>⊰</b> <b>⊹</b> <b>ァ</b> <b>۶</b> <b>ϟ</b> <b>✍</b> <b>•</b> <b>┳</b> <b>♰</b> <b>♱</b> <b>‡</b> <b>£</b> <b>±</b> <b>★</b> <b>✫</b>
+
+            <b>☆</b> <b>✩</b> <b>✮</b> <b>✯</b> <b>✭</b> <b>❇</b> <b>❈</b> <b>❉</b> <b>✲</b> <b>✣</b> <b>✤</b> <b>✥</b> <b>✖</b> <b>✗</b> <b>✘</b> <b>✕</b> <b>✖</b> <b>ㄨ</b> <b>ҳ</b> <b>Ҳ</b> <b>ҳ</b> <b>×</b> <b>✚</b> <b>☜</b> <b>☝</b> <b>☞</b> <b>☟</b> <b>┱</b> <b>┲</b> <b>彡</b> <b>乀</b> <b>☑</b> <b>☒</b> <b>▣</b> <b>▤</b> <b>▥</b> <b>▦</b> <b>▩</b> <b>▧</b> <b>▨</b> <b>◘</b> <b>◙</b> <b>▄</b> <b>▬</b> <b>■</b> <b>█</b>▌<b> </b>█<b>▐</b> <b>▪</b> <b>▫</b> <b>▢</b> <b>回</b> <b>▀</b> <b>▄</b> <b>∴</b> <b>∵</b> <b>∴</b> <b>∷</b> <b>☁</b> <b>┣</b>┓<b> </b>┏<b>┫</b> <b>┠</b> <b>┨</b> <b>┯</b> <b>┷</b> <b>┏</b> <b>┓</b> <b>┗</b> <b>┛</b> <b>┳</b> <b>⊥</b> <b>﹃</b> <b>﹄</b> <b>〓</b> <b>┌</b> <b>┐</b> <b>└</b> <b>┘</b> <b>〒</b> <b>∩</b> <b>⊂</b> <b>⊃</b> <b>∪</b> <b>₪</b> <b>Ψ</b> <b>￥</b> <b>¥</b> <b>Ӝ</b> <b>♭</b> <b>❦</b> <b>ｰ</b> <b>ヽ</b> <b>ー</b> <b>☎</b> <b>☏</b> <b>♔</b> <b>♕</b> <b>♚</b> <b>♛</b> <b>✙</b> <b>♝</b> <b>☪</b> <b>☭</b> <b>☂</b> <b>¤</b> <b>♨</b> <b>∠</b> <b>⊥</b> <b>∀</b> <b>ю</b> <b>Ю</b> <b>Ѽ</b> <b>＊</b> <b>╮</b> <b>╭</b> <b>╯</b> <b>╰</b> <b>ァ</b> <b>⌒</b> <b>べ</b> <b>ツ</b> <b>ぃ</b> <b>﹉</b> <b>﹊</b> <b>﹍</b> <b>﹎</b> <b>﹏</b> <b>﹋</b> <b>﹌</b> <b>‖</b> <b>︱</b> <b>︳</b> <b>︴</b> <b>┋</b> <b>¦</b> <b>¬</b> <b>┌</b> <b>┘</b> <b>═</b> <b>≡</b> <b>╔</b> <b>╗</b> <b>╦</b> <b>╩</b> <b>╠</b> <b>╬</b> <b>╫</b> <b>╝</b> <b>╚</b> <b>≧</b> <b>≦</b> <b>√</b> <b>☈</b> <b>♩</b> <b>╄</b>
+
+            <b>▓▒░</b> <b>▓▒▌</b> <b>▓</b> <b>▒</b> <b>░</b> <b>㍿</b> <b>『</b> <b>』</b> <b>〖〗</b> <b>【ツ】</b> <b>【】</b>
+            <b>(-’๏_๏’-)</b> <b>`•.¸¸.•´´¯`•• .¸¸.•´¯`•.</b> <b>(◐ o ◑ )</b> <b>(⊙…⊙ )</b> <b>(︶︹︺)</b>
+        </div>
+        <div id="flags" class="col-10 flags optIcons profilefont" style="display:none;">
+            <p><strong>Warning:</strong> These flags require a lot of characters!</p>
+
+            <div class="row flagPreview">
+                <div class="col-6">
+                    <p>These flags look good in both profiles and gifts</p>
+
+                    <b class="m-1" data-code="<color=#4A9753>█</color><color=white>█</color><color=red>█</color>"><span style="color: #4A9753;">█</span><span style="color: white;">█</span><span style="color: red;">█</span></b>
+                    <b class="m-1" data-code="<color=#131006>█</color><color=#f4e90b>█</color><color=#e10000>█</color>"><span style="color: #131006;">█</span><span style="color: #f4e90b;">█</span><span style="color: #e10000;">█</span></b>
+                    <b class="m-1" data-code="<color=blue>█</color><color=white>█</color><color=red>█</color>"><span style="color: blue;">█</span><span style="color: white;">█</span><span style="color: red;">█</span></b>
+                    <b class="m-1" data-code="<color=#2dc128>█</color><color=white>█</color><color=#dd9e2b>█</color>"><span style="color: #2dc128;">█</span><span style="color: white;">█</span><span style="color: #dd9e2b;">█</span></b>
+
+                </div>
+                <div class="col-6" style="line-height: 1rem;">
+                    <p>These flags look good in gifts only (because of line height)</p>
+
+                    <div class="row">
+                        <div class="col-2 m-1">
+                           <b data-code="<color=red>████████</color>
+<color=white>████████</color>
+<color=blue>████████</color>"><span style="color: red;">████████</span><br><span style="color: white;">████████</span><br><span style="color: blue;">████████</span></b>
+                            <BR><BR>
+
+                            <b data-code="<color=white>████████</color>
+<color=#0039a6>████████</color>
+<color=#d52b1e>████████</color>"><span style="color: white;">████████</span><br><span style="color: #0039a6;">████████</span><br><span style="color: #d52b1e;">████████</span></b>
+                            <BR><BR>
+
+                            <b data-code="<color=black>████████</color>
+<color=red>████████</color>
+<color=yellow>████████</color>"><span style="color: black;">████████</span><br><span style="color: red;">████████</span><br><span style="color: yellow;">████████</span></b>
+                        </div>
+                        <div class="col-3 m-1">
+                            <b data-code="<color=red>██████████</color>
+<color=yellow>██████████</color>
+<color=yellow>██████████</color>
+<color=red>██████████</color>"><span style="color: red;">██████████</span><br><span style="color: yellow;">██████████</span><br><span style="color: yellow;">██████████</span><br><span style="color: red;">██████████</span></b>
+
+                            <BR><BR>
+
+                            <b data-code="<color=white>████</color><color=red>██</color><color=white>████</color>
+<color=red>██████████</color>
+<color=white>████</color><color=red>██</color><color=white>████</color>"><span style="color: white;">████</span><span style="color: red;">██</span><span style="color: white;">████</span><br><span style="color: red;">██████████</span><br><span style="color: white;">████</span><span style="color: red;">██</span><span style="color: white;">████</span></b>
+
+                            <BR><BR>
+
+                            <b data-code="<color=#ff0000>██████████
+████<color=#ffffff>██</color>████
+██<color=#ffffff>██████</color>██
+████<color=#ffffff>██</color>████
+██████████</color>"><span style="color: #ff0000;">██████████<br>████<span style="color: #ffffff;">██</span>████<br>██<span style="color: #ffffff;">██████</span>██<br>████<span style="color: #ffffff;">██</span>████<br>██████████</span></b>
+
+
+                        </div>
+                        <div class="col-3 m-1">
+                            <b data-code="<color=white>██████</color>
+<color=red>██████</color>"><span style="color: white;">██████</span><br><span style="color: red;">██████</span></b>
+                            <BR><BR>
+
+                            <b data-code="<color=red>██████</color>
+<color=white>██████</color>"><span style="color: red;">██████</span><br><span style="color: white;">██████</span></b>
+                        </div>
+
+                        <b data-code="<color=#005bbc>██████</color>
+<color=#ffd600>██████</color>"><span style="color: #005bbc;">██████</span><br><span style="color: #ffd600;">██████</span></b>
+
+                    </div>
+
+
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+    <div id="massGiftGenerator" style="display:none;">
+    <div id="" class="row mt-5">
+        <div class="col">
+            <h3>Mass gift generator</h3>
+            <hr>
+        </div>
+    </div>
+        <div id="" class="row mt-5">
+            <div class="col-2">
+                <h5>List of nicknames</h5>
+                <textarea id="giftGeneratorNicknameList" name="giftGeneratorNicknameList" placeholder="Enter list of nicknames. Every nickname on a newline" cols="25" rows="10" minlength="10" maxlength="500" required></textarea>
+            </div>
+            <div class="col-9">
+                <div id="generatedGiftCodes"></div>
             </div>
         </div>
-    </main>
-
-    <!-- Modals -->
-    <!-- Color Modal -->
-    <div class="modal fade" id="colorModal" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel" aria-hidden="true">
-        <!-- ... (color modal content) ... -->
     </div>
 
-    <!-- Gradient Modal -->
-    <div class="modal fade" id="gradientModal" tabindex="-1" role="dialog" aria-labelledby="gradientModalLabel" aria-hidden="true">
-        <!-- ... (gradient modal content) ... -->
-    </div>
+    <script type="application/javascript">
 
-    <!-- Size Modal -->
-    <div class="modal fade" id="sizeModal" tabindex="-1" role="dialog" aria-labelledby="sizeModalLabel" aria-hidden="true">
-        <!-- ... (size modal content) ... -->
-    </div>
+        var previewType = 'profile';
+        var changeActive = false;
+        var gradientSource ='';
+        var characterCount = 0;
+        var undoBuffer = [];
 
-    <script src="js/main.js"></script>
+        $(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip()
+        })
+
+        $('#errorDialog').hide();
+
+
+        $(document).ready(function() {
+            jQuery.fn.extend({
+                insertAtCaret: function (myValue) {
+                    return this.each(function (i) {
+                        if (document.selection) {
+                            //For browsers like Internet Explorer
+                            this.focus();
+                            var sel = document.selection.createRange();
+                            sel.text = myValue;
+                            this.focus();
+                        } else if (this.selectionStart || this.selectionStart == '0') {
+                            //For browsers like Firefox and Webkit based
+                            var startPos = this.selectionStart;
+                            var endPos = this.selectionEnd;
+                            var scrollTop = this.scrollTop;
+                            this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos, this.value.length);
+                            this.focus();
+                            this.selectionStart = startPos + myValue.length;
+                            this.selectionEnd = startPos + myValue.length;
+                            this.scrollTop = scrollTop;
+                        } else {
+                            this.value += myValue;
+                            this.focus();
+                        }
+                    });
+                }
+            });
+
+
+        });
+
+
+        // JS function to convert BBCode and HTML code - http;//coursesweb.net/javascript/
+        var BBCodeHTML = function() {
+            var me = this;            // stores the object instance
+            var token_match = /{[A-Z_]+[0-9]*}/ig;
+
+            // regular expressions for the different bbcode tokens
+            var tokens = {
+                'URL' : '((?:(?:[a-z][a-z\\d+\\-.]*:\\/{2}(?:(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})+|[0-9.]+|\\[[a-z0-9.]+:[a-z0-9.]+:[a-z0-9.:]+\\])(?::\\d*)?(?:\\/(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})*)*(?:\\?(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?(?:#(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?)|(?:www\\.(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})+(?::\\d*)?(?:\\/(?:[a-z0-9\\-._~\\!$&\'*+,;=:@|]+|%[\\dA-F]{2})*)*(?:\\?(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?(?:#(?:[a-z0-9\\-._~\\!$&\'*+,;=:@\\/?|]+|%[\\dA-F]{2})*)?)))',
+                'LINK' : '([a-z0-9\-\./]+[^"\' ]*)',
+                'EMAIL' : '((?:[\\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*(?:[\\w\!\#$\%\'\*\+\-\/\=\?\^\`{\|\}\~]|&)+@(?:(?:(?:(?:(?:[a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(?:\\d{1,3}\.){3}\\d{1,3}(?:\:\\d{1,5})?))',
+                'TEXT' : '(.*?)',
+                'SIMPLETEXT' : '([a-zA-Z0-9-+.,_ ]+)',
+                'INTTEXT' : '([a-zA-Z0-9-+,_. ]+)',
+                'IDENTIFIER' : '([a-zA-Z0-9-_]+)',
+                'COLOR' : '([a-z]+|#[0-9abcdef]+)',
+                'NUMBER'  : '([0-9]+)'
+            };
+
+            var bbcode_matches = [];        // matches for bbcode to html
+
+            var html_tpls = [];             // html templates for html to bbcode
+
+            var html_matches = [];          // matches for html to bbcode
+
+            var bbcode_tpls = [];           // bbcode templates for bbcode to html
+
+            /**
+             * Turns a bbcode into a regular rexpression by changing the tokens into
+             * their regex form
+             */
+            var _getRegEx = function(str) {
+                var matches = str.match(token_match);
+                var nrmatches = matches.length;
+                var i = 0;
+                var replacement = '';
+
+                if (nrmatches <= 0) {
+                    return new RegExp(preg_quote(str), 'g');        // no tokens so return the escaped string
+                }
+
+                for(; i < nrmatches; i += 1) {
+                    // Remove {, } and numbers from the token so it can match the
+                    // keys in tokens
+                    var token = matches[i].replace(/[{}0-9]/g, '');
+
+                    if (tokens[token]) {
+                        // Escape everything before the token
+                        replacement += preg_quote(str.substr(0, str.indexOf(matches[i]))) + tokens[token];
+
+                        // Remove everything before the end of the token so it can be used
+                        // with the next token. Doing this so that parts can be escaped
+                        str = str.substr(str.indexOf(matches[i]) + matches[i].length);
+                    }
+                }
+
+                replacement += preg_quote(str);      // add whatever is left to the string
+
+                return new RegExp(replacement, 'gi');
+            };
+
+            /**
+             * Turns a bbcode template into the replacement form used in regular expressions
+             * by turning the tokens in $1, $2, etc.
+             */
+            var _getTpls = function(str) {
+                var matches = str.match(token_match);
+                var nrmatches = matches.length;
+                var i = 0;
+                var replacement = '';
+                var positions = {};
+                var next_position = 0;
+
+                if (nrmatches <= 0) {
+                    return str;       // no tokens so return the string
+                }
+
+                for(; i < nrmatches; i += 1) {
+                    // Remove {, } and numbers from the token so it can match the
+                    // keys in tokens
+                    var token = matches[i].replace(/[{}0-9]/g, '');
+                    var position;
+
+                    // figure out what $# to use ($1, $2)
+                    if (positions[matches[i]]) {
+                        position = positions[matches[i]];         // if the token already has a position then use that
+                    } else {
+                        // token doesn't have a position so increment the next position
+                        // and record this token's position
+                        next_position += 1;
+                        position = next_position;
+                        positions[matches[i]] = position;
+                    }
+
+                    if (tokens[token]) {
+                        replacement += str.substr(0, str.indexOf(matches[i])) + '$' + position;
+                        str = str.substr(str.indexOf(matches[i]) + matches[i].length);
+                    }
+                }
+
+                replacement += str;
+
+                return replacement;
+            };
+
+            /**
+             * Adds a bbcode to the list
+             */
+            me.addBBCode = function(bbcode_match, bbcode_tpl) {
+                // add the regular expressions and templates for bbcode to html
+                bbcode_matches.push(_getRegEx(bbcode_match));
+                html_tpls.push(_getTpls(bbcode_tpl));
+
+                // add the regular expressions and templates for html to bbcode
+                html_matches.push(_getRegEx(bbcode_tpl));
+                bbcode_tpls.push(_getTpls(bbcode_match));
+            };
+
+            /**
+             * Turns all of the added bbcodes into html
+             */
+            me.bbcodeToHtml = function(str) {
+                var nrbbcmatches = bbcode_matches.length;
+                var i = 0;
+
+                for(; i < nrbbcmatches; i += 1) {
+                    str = str.replace(bbcode_matches[i], html_tpls[i]);
+                }
+
+                return str;
+            };
+
+            /**
+             * Turns html into bbcode
+             */
+            me.htmlToBBCode = function(str) {
+                var nrhtmlmatches = html_matches.length;
+                var i = 0;
+
+                for(; i < nrhtmlmatches; i += 1) {
+                    str = str.replace(html_matches[i], bbcode_tpls[i]);
+                }
+
+                return str;
+            }
+
+            /**
+             * Quote regular expression characters plus an optional character
+             * taken from phpjs.org
+             */
+            function preg_quote (str, delimiter) {
+                return (str + '').replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\' + (delimiter || '') + '-]', 'g'), '\\$&');
+            }
+
+            // adds BBCodes and their HTML
+            me.addBBCode('<b>{TEXT}</b>>', '<strong>{TEXT}</strong>');
+            me.addBBCode('<i>{TEXT}</i>', '<em>{TEXT}</em>');
+            me.addBBCode('<color={COLOR}>{TEXT}</color>', '<span style="color: {COLOR};">{TEXT}</span>');
+            me.addBBCode('<size={NUMBER}>{TEXT}</size>', '<span style="font-size: {NUMBER}px;">{TEXT}</span>');
+        };
+
+
+        var bbcodeParser = new BBCodeHTML();       // creates object instance of BBCodeHTML()
+
+        var selectedText;
+
+        $( "#giftGeneratorNicknameList" ).on( "change keyup paste", function() {
+
+            updateGeneratedGifts();
+
+        });
+
+        function updateGeneratedGifts()
+        {
+            var textAreaValue = $('#giftGeneratorNicknameList').val();
+            var nicknameArray = textAreaValue.split(/\r?\n/);
+            var htmlCode = '';
+
+            // amount of lines in gift designer
+            var currentProfileCode = $('#profileCode').val();
+            var amountOfProfileCodeLines = currentProfileCode.split(/\r?\n/).length;
+
+
+            console.log(amountOfProfileCodeLines);
+
+            $.each(nicknameArray, function( index, value ) {
+
+                if (value.length > 0)
+                {
+                    updatedProfileCode = currentProfileCode.replace('%username%',value);
+
+                    htmlCode+= '<h5>Gift code for '+ value +'</h5>';
+                    htmlCode+= '<textarea onclick="this.focus();this.select()" readonly="readonly" id="gift'+index+'" name="gift'+index+'" cols="150" rows="'+amountOfProfileCodeLines+'">'+updatedProfileCode+'</textarea>'
+                }
+            });
+
+            $("#generatedGiftCodes").html(htmlCode);
+        }
+
+
+        $("#undoButton").on('click', function () {
+
+            var undoValue = undoBuffer.at(-1);
+
+            if (undoValue)
+            {
+                $('#profileCode').val(undoValue);
+                undoBuffer.pop();
+            }
+
+            changeActive = true;
+            updateParsed();
+        });
+
+        $("#boldButton").on('click', function () {
+
+            selectedText = getInputSelection($("#profileCode"));
+
+            undoBuffer.push($('#profileCode').val());
+
+            if (selectedText.length > 0)
+            {
+                $('#profileCode').insertAtCaret( '<b>'+ selectedText + '</b>' );
+            }
+            else
+            {
+                $('#profileCode').insertAtCaret( '<b>BOLD TEXT</b>' );
+            }
+
+            changeActive = true;
+            updateParsed();
+        })
+
+        $("#italicButton").on('click', function () {
+
+            selectedText = getInputSelection($("#profileCode"));
+
+            undoBuffer.push($('#profileCode').val());
+
+            if (selectedText.length > 0)
+            {
+                $('#profileCode').insertAtCaret( '<i>'+ selectedText + '</i>' );
+            }
+            else
+            {
+                $('#profileCode').insertAtCaret( '<i>ITALIC TEXT</i>' );
+            }
+
+            changeActive = true;
+            updateParsed();
+        })
+
+        $("#colorButton").on('click', function () {
+
+            var cursorPosition = $('#profileCode').prop("selectionStart");
+
+            $('#colorModal').modal('show')
+
+            selectedText = getInputSelection($("#profileCode"));
+        })
+
+        $("#gradientButton").on('click', function () {
+
+            selectedText = getInputSelection($("#profileCode"));
+
+            if (selectedText.length === 0)
+            {
+                alert('Select a piece of text first!')
+            }
+            else if (selectedText.includes('<size') || selectedText.includes('size>') ||
+                     selectedText.includes('<color') || selectedText.includes('color>') ||
+                     selectedText.includes('<i') || selectedText.includes('i>') ||
+                     selectedText.includes('<b') || selectedText.includes('b>')
+            )
+            {
+                alert('Please don\'t include tags like <size>, <color> etc in your selection.');
+            }
+            else
+            {
+                var cursorPosition = $('#profileCode').prop("selectionStart");
+
+                $('#gradientModal').modal('show');
+
+                gradientSource = selectedText;
+
+                updateGradient();
+            }
+
+        })
+
+        $("#colorModalButton").on('click', function () {
+
+            var cursorPosition = $('#profileCode').prop("selectionStart");
+
+            undoBuffer.push($('#profileCode').val());
+
+            $('#colorModal').modal('hide');
+
+            var color = $('#colorPicker').val();
+
+            if (selectedText.length > 0)
+            {
+                $('#profileCode').insertAtCaret( '<color='+color+'>'+ selectedText + '</color>' );
+            }
+            else
+            {
+                $('#profileCode').insertAtCaret( '<color='+color+'>COLORED TEXT</color>' );
+            }
+
+            changeActive = true;
+
+            updateParsed();
+        })
+
+        $("#gradientModalButton").on('click', function () {
+
+            var cursorPosition = $('#profileCode').prop("selectionStart");
+
+            undoBuffer.push($('#profileCode').val());
+
+            $('#gradientModal').modal('hide');
+
+            var gradientCode = $('#gradientTextarea').val();
+
+            if (selectedText.length > 0)
+            {
+                $('#profileCode').insertAtCaret( gradientCode );
+            }
+
+            changeActive = true;
+
+            updateParsed();
+        })
+
+
+        $("#sizeButton").on('click', function () {
+
+            var cursorPosition = $('#profileCode').prop("selectionStart");
+
+            $('#sizeModal').modal('show')
+
+            selectedText = getInputSelection($("#profileCode"));
+        })
+
+        function pickSize(size)
+        {
+            undoBuffer.push($('#profileCode').val());
+
+            if (selectedText.length > 0)
+            {
+                $('#profileCode').insertAtCaret( '<size='+size+'>'+ selectedText + '</size>' );
+            }
+            else
+            {
+                $('#profileCode').insertAtCaret( '<size='+size+'>TEXT</size>' );
+            }
+
+
+            $('#sizeModal').modal('hide');
+
+            changeActive = true;
+            updateParsed();
+        }
+
+        function getInputSelection(elem){
+            if(typeof elem != "undefined"){
+                s=elem[0].selectionStart;
+                e=elem[0].selectionEnd;
+                return elem.val().substring(s, e);
+            }else{
+                return '';
+            }
+        }
+
+        function activateProfile()
+        {
+            $('#presets').show();
+            $('#main1').show();
+            $('#main2').show();
+            $('#main3').hide();
+            $('#giftImage').hide();
+            $('#profileImage').show();
+
+            $('#profileButton').prop('disabled', true);
+            $('#giftButton').prop('disabled', false);
+            $('#fontButton').prop('disabled', false);
+
+            $('#buttonGroup').fadeIn();
+            $('#characterCountDiv').fadeIn();
+
+            previewType = 'profile';
+
+            updateParsed()
+
+        }
+
+        function activateGift()
+        {
+            $('#presets').show();
+            $('#main1').show();
+            $('#main2').show();
+            $('#main3').hide();
+            $('#giftImage').show();
+            $('#profileImage').hide();
+
+            $('#profileButton').prop('disabled', false);
+            $('#giftButton').prop('disabled', true);
+            $('#fontButton').prop('disabled', false);
+
+            $('#buttonGroup').fadeIn();
+            $('#characterCountDiv').fadeIn();
+
+            previewType = 'gift';
+
+            updateParsed()
+        }
+
+        function activateFontHelper()
+        {
+            $('#presets').hide();
+            $('#main1').hide();
+            $('#main2').hide();
+            $('#main3').show();
+
+            $('#profileButton').prop('disabled', false);
+            $('#giftButton').prop('disabled', false);
+            $('#fontButton').prop('disabled', true);
+
+            $('#flags').hide();
+            $('#symbols').hide();
+
+            $('#buttonGroup').fadeOut();
+            $('#characterCountDiv').fadeOut();
+
+            previewType = 'fonts';
+
+            updateParsed()
+        }
+
+        $("#symbolsButton").on('click', function () {
+
+            var cursorPosition = $('#profileCode').prop("selectionStart");
+
+            $('#symbols').show();
+            $('#flags').hide();
+        });
+
+        $("#flagsButton").on('click', function () {
+
+            var cursorPosition = $('#profileCode').prop("selectionStart");
+
+            $('#symbols').hide();
+            $('#flags').show();
+        });
+
+        $(document).on('click','.symbols b', function() {
+
+            undoBuffer.push($('#profileCode').val());
+
+            $('#profileCode').insertAtCaret( this.textContent );
+            changeActive = true;
+            updateParsed();
+
+        });
+
+        $(document).on('click','.flags b', function() {
+
+            undoBuffer.push($('#profileCode').val());
+
+            $('#profileCode').insertAtCaret( this.dataset.code );
+            changeActive = true;
+            updateParsed();
+
+        });
+
+
+        $("#profileCode").on('change keyup paste', function()
+        {
+            changeActive = true;
+            updateParsed();
+            updateGeneratedGifts();
+        });
+
+        $("#inputText").on('change keyup paste', function()
+        {
+            changeActive = true;
+            fontGenerator();
+        });
+
+        function loadPreset(type,no)
+        {
+            if (changeActive === true)
+            {
+                if (confirm('If you load a preset, your manual input will be gone! Continue?'))
+                {
+                    undoBuffer.push($('#profileCode').val());
+                    $("#profileCode").val(presets(type,no));
+                    changeActive = false;
+                    updateParsed();
+                }
+            }
+            else
+            {
+                undoBuffer.push($('#profileCode').val());
+                $("#profileCode").val(presets(type,no));
+                updateParsed();
+            }
+        }
+
+        function presets(type,no)
+        {
+            if (type === 'profile')
+            {
+              if (no === 1)
+              {
+                  return "Hi all!\n" +
+                      "\n" +
+                      "My name is blah. I do or don't like colds!\n" +
+                      "\n" +
+                      "<b>My do's</b>\n" +
+                      "<color=#59ff00> ▶</color> I do this\n" +
+                      "<color=#59ff00> ▶</color> And that\n" +
+                      "\n" +
+                      "<b>My dont's</b>\n" +
+                      "<color=#ff0000> ▶</color> But I don't do this\n" +
+                      "<color=#ff0000> ▶</color> And that either"
+              }
+              else if (no === 2)
+              {
+                  return "<color=#e89afe>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\n" +
+                      "</color>\n" +
+                      "<color=#de6dfd>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</color>\n" +
+                      "\n" +
+                      "<color=#cf32fb>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</color>"
+              }
+              else if (no === 3)
+              {
+                  return "<size=16>\t\t\t\t\t\t\t\t\t\t\t\t( ) Online (✔) AFK</size>\n" +
+                      "\n" +
+                      "Hey ツ\n" +
+                      "\n" +
+                      "My name is <color=#ff0000>Blah</color>. Been here for x and love making friends.\n" +
+                      "\n" +
+                      "<size=30>I am not into <b>colds</b>!</size>\n" +
+                      "\n" +
+                      "\n"
+              }
+            }
+            else if (type === 'gift')
+            {
+                if (no === 1)
+                {
+                    return "<b><size=60><color=#F6F6F6>✬</color></size> <size=36><color=#16C326>Merry</color> <color=#EA4630>Christmas</color></size><size=60><color=#F6F6F6>✬</color></size></b>";
+                }
+                else if (no === 2)
+                {
+                    return "<size=20>Want a cigarette?</size>\n" +
+                        "<color=#ffa200>███</color>█████████ `•.¸¸.•´´¯`•."
+                }
+                else if (no === 3)
+                {
+                    return "<size=30>✭<color=#c96e6e>This </color><color=#c95e5e>is</color> <color=#c74d4d>a</color> <color=#c73838>nice</color> <color=#be2323>gradient</color><color=#c41212>, isn't</color> <color=#d10000>it?</color>✭</size>";
+                }
+                else if (no === 4)
+                {
+                    return "<color=#777777><size=50>♬</size></color>\n" +
+                        "<i><size=30>\"Let me sing\n" +
+                        "a song for you\"</size></i>\n" +
+                        "<color=#777777><size=50>♬</size></color>"
+                }
+                else if (no === 5)
+                {
+                    return "<size=38><color=#ff0000>❤</color> I love you so much <color=#ff0000>❤</color></size>";
+                }
+            }
+        }
+
+        function massGiftGenerator()
+        {
+            profileCode = $('#profileCode').val();
+
+            if (!profileCode.includes("%username%"))
+            {
+                alert('Include %username% somewhere in the code');
+            }
+            else
+            {
+                $('#flags').hide();
+                $('#symbols').hide();
+                $('#massGiftGenerator').show();
+            }
+        }
+
+        var checkHTML = function(html) {
+
+            html = html.replace(/&/g, "");
+            html = html.replace(/\<3/g, "");
+
+            var doc = document.createElement('div');
+            doc.innerHTML = html;
+
+            return ( doc.innerHTML === html );
+        }
+
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
+        function hex (c) {
+            var s = "0123456789abcdef";
+            var i = parseInt (c);
+            if (i == 0 || isNaN (c))
+                return "00";
+            i = Math.round (Math.min (Math.max (0, i), 255));
+            return s.charAt ((i - i % 16) / 16) + s.charAt (i % 16);
+        }
+
+        /* Convert an RGB triplet to a hex string */
+        function convertToHex (rgb) {
+            return hex(rgb[0]) + hex(rgb[1]) + hex(rgb[2]);
+        }
+
+        /* Remove '#' in color hex string */
+        function trim (s) { return (s.charAt(0) == '#') ? s.substring(1, 7) : s }
+
+        /* Convert a hex string to an RGB triplet */
+        function convertToRGB (hex) {
+            var color = [];
+            color[0] = parseInt ((trim(hex)).substring (0, 2), 16);
+            color[1] = parseInt ((trim(hex)).substring (2, 4), 16);
+            color[2] = parseInt ((trim(hex)).substring (4, 6), 16);
+            return color;
+        }
+
+        function updateSpitter(colorStart,colorEnd,colorCount) {
+
+            var start = convertToRGB (colorEnd);
+            var end   = convertToRGB (colorStart);
+
+            //Alpha blending amount
+            var alpha = 0.0;
+
+            var colorArray = [];
+
+            for (i = 0; i < colorCount; i++) {
+                var c = [];
+                alpha += (1.0/colorCount);
+
+                c[0] = start[0] * alpha + (1 - alpha) * end[0];
+                c[1] = start[1] * alpha + (1 - alpha) * end[1];
+                c[2] = start[2] * alpha + (1 - alpha) * end[2];
+
+                colorArray.push(convertToHex (c));
+
+            }
+
+            return colorArray;
+        }
+
+
+        function pad(n, width, z) {
+            z = z || '0';
+            n = n + '';
+            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+        }
+
+        function copyToClipBoard(id) {
+            /* Get the text field */
+            var copyText = document.getElementById(id);
+            var button = $('#' + id + 'CopyButton');
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            button.html('copied!');
+            /* Alert the copied text */
+        }
+
+        function slashed(text){
+
+            var charArray = text.split("");
+            for(var i = 0; i < charArray.length; i++) {
+                    charArray[i] = "̷" + charArray[i];
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function mirrored(text){
+            var map={a:"ɒ",b:"d",c:"ɔ",e:"ɘ",f:"f",g:"ǫ",h:"ʜ",j:"ꞁ",k:"ʞ",l:"|",n:"ᴎ",p:"q",q:"p",r:"ɿ",s:"ꙅ",t:"ƚ",y:"ʏ",z:"ƹ",A:"A", B:"8",C:"Ɔ",D:"ᗡ",E:"Ǝ",F:"ꟻ",G:"G",H: "H", I: "I", J:"Ⴑ",K:"⋊",L:"|_",N:"Ͷ",P:"ꟼ",Q:"Ọ",R:"Я",S:"Ꙅ",T:"T",U: "U", V: "V", W: "W", X: "X", Y:"Y", Z:"Ƹ",1:"",2:"",3:"",4:"",5:"",6:"",7:"","&":"",";":"","[":"]","(":")","{":"}","?":"⸮","<":">","ä":"ɒ̈","ß":"ᙠ","´":"`","é":"ɘ̀","á":"ɒ̀","ó":"ò","ú":"ù","É":"Ǝ̀","Á":"À","Ó":"Ò","Ú":"Ù","`":"´","è":"ɘ́","à":"ɒ́","È":"Ǝ́","ê":"ɘ̂","â":"ɒ̂","Ê":"Ǝ̂","Ø":"ᴓ","ø":"ᴓ"};
+
+            var charArray = text.split("");
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text.split("").reverse().join("");
+        }
+
+        function flipped(text){
+
+            var map={a:"ɐ",b:"q",c:"ɔ",d:"p",e:"ǝ",f:"ɟ",g:"ɓ",h:"ɥ",i:"ı",j:"ɾ",k:"ʞ",l:"l",m:"ɯ",n:"u",r:"ɹ",t:"ʇ",v:"ʌ",w:"ʍ",y:"ʎ",A:"∀",B:"ᙠ",C:"Ɔ",D:"ᗡ",E:"Ǝ",F:"Ⅎ",G:"⅁",H:"H", I: "I", J:"ſ",K:"⋊",L:"˥",M:"W",O:"O", P:"Ԁ",Q:"Ό",R:"ᴚ",S: "Ƨ", T:"⊥",U:"∩",V:"Λ",W:"M", X: "X", Y:"⅄", Z: "Z",1:"⇂",2:"ᄅ",3:"Ɛ",4:"ㄣ",5:"ގ",6:"9",7:"ㄥ","&":"⅋",".":"˙",'"':"„",";":"؛","[":"]","(":")","{":"}","?":"¿","!":"¡","'":",","<":">","‾":"_","¯":"_","‿":"⁀","⁅":"⁆","∴":"∵","\r":"\n","ß":"ᙠ","̈":"̤","ä":"ɐ̤","ö":"o̤","ü":"n̤","Ä":"∀̤","Ö":"O̤","Ü":"∩̤","´":" ̗","é":"ǝ̗","á":"ɐ̗","ó":"o̗","ú":"n̗","É":"Ǝ̗","Á":"∀̗","Ó":"O̗","Ú":"∩̗","`":" ̖","è":"ǝ̖","à":"ɐ̖","ò":"o̖","ù":"n̖","È":"Ǝ̖","À":"∀̖","Ò":"O̖","Ù":"∩̖","^":" ̮","ê":"ǝ̮","â":"ɐ̮","ô":"o̮","û":"n̮","Ê":"Ǝ̮","Â":"∀̮","Ô":"O̮","Û":"∩̮"};
+
+            var charArray = text.split("");
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text.split("").reverse().join("");
+        }
+
+        function bent(text) {
+
+            var map={a:"ą",b:"ҍ",c:"ç",d:"ժ",e:"ҽ",f:"ƒ",g:"ց",h:"հ",i:"ì",j:"ʝ",k:"ҟ",l:"Ӏ",m:"ʍ",n:"ղ",o:"օ",p:"ք",q:"զ",r:"ɾ",s:"ʂ",t:"է",u:"մ",v:"ѵ",w:"ա",x:"×",y:"վ",z:"Հ",A:"Ⱥ",B:"β",C:"↻",D:"Ꭰ",E:"Ɛ",F:"Ƒ",G:"Ɠ",H:"Ƕ",I:"į",J:"ل",K:"Ҡ",L:"Ꝉ",M:"Ɱ",N:"ហ",O:"ට",P:"φ",Q:"Ҩ",R:"འ",S:"Ϛ",T:"Ͳ",U:"Ա",V:"Ỽ",W:"చ",X:"ჯ",Y:"Ӌ",Z:"ɀ",0:"⊘",1:"1",2:"ϩ",3:"Ӡ",4:"५",5:"Ƽ",6:"Ϭ",7:"7",8:"8",9:"९","&":"⅋","(":"{",")":"}","{":"(","}":")","ä":"ą̈","ö":"օ̈","ü":"մ̈","Ä":"Ⱥ̈","Ö":"ට̈","Ü":"Ա̈","é":"ҽ́","á":"ą́","ó":"օ́","ú":"մ́","É":"Ɛ́","Á":"Ⱥ́","Ó":"ට́","Ú":"Ա́","è":"ҽ̀","à":"ą̀","ò":"օ̀","ù":"մ̀","È":"Ɛ̀","À":"Ⱥ̀","Ò":"ට̀","Ù":"Ա̀","ê":"ҽ̂","â":"ą̂","ô":"օ̂","û":"մ̂","Ê":"Ɛ̂","Â":"Ⱥ̂","Ô":"ට̂","Û":"Ա̂"};
+
+            var charArray = text.split("");
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function japanese(text) {
+            var map={a:"卂",b:"乃",c:"匚",d:"刀",e:"乇",f:"下",g:"厶",h:"卄",i:"工",j:"丁",k:"长",l:"乚",m:"从",n:"𠘨",o:"口",p:"尸",q:"㔿",r:"尺",s:"丂",t:"丅",u:"凵",v:"リ",w:"山",x:"乂",y:"丫",z:"乙",A:"卂",B:"乃",C:"匚",D:"刀",E:"乇",F:"下",G:"厶",H:"卄",I:"工",J:"丁",K:"长",L:"乚",M:"从",N:"𠘨",O:"口",P:"尸",Q:"㔿",R:"尺",S:"丂",T:"丅",U:"凵",V:"リ",W:"山",X:"乂",Y:"丫",Z:"乙"};
+
+            var charArray = text.split("");
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function smallCaps(text) {
+            var map = {"0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"ᴀ","b":"ʙ","c":"ᴄ","d":"ᴅ","e":"ᴇ","f":"ғ","g":"ɢ","h":"ʜ","i":"ɪ","j":"ᴊ","k":"ᴋ","l":"ʟ","m":"ᴍ","n":"ɴ","o":"ᴏ","p":"ᴘ","q":"ǫ","r":"ʀ","s":"s","t":"ᴛ","u":"ᴜ","v":"ᴠ","w":"ᴡ","x":"x","y":"ʏ","z":"ᴢ","A":"A","B":"B","C":"C","D":"D","E":"E","F":"F","G":"G","H":"H","I":"I","J":"J","K":"K","L":"L","M":"M","N":"N","O":"O","P":"P","Q":"Q","R":"R","S":"S","T":"T","U":"U","V":"V","W":"W","X":"X","Y":"Y","Z":"Z"};
+            var charArray = text.split("");
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function circled(text) {
+
+            var map={0:"⓪",1:"①",2:"②",3:"③",4:"④",5:"⑤",6:"⑥",7:"⑦",8:"⑧",9:"⑨",a:"ⓐ",b:"ⓑ",c:"ⓒ",d:"ⓓ",e:"ⓔ",f:"ⓕ",g:"ⓖ",h:"ⓗ",i:"ⓘ",j:"ⓙ",k:"ⓚ",l:"ⓛ",m:"ⓜ",n:"ⓝ",o:"ⓞ",p:"ⓟ",q:"ⓠ",r:"ⓡ",s:"ⓢ",t:"ⓣ",u:"ⓤ",v:"ⓥ",w:"ⓦ",x:"ⓧ",y:"ⓨ",z:"ⓩ",A:"Ⓐ",B:"Ⓑ",C:"Ⓒ",D:"Ⓓ",E:"Ⓔ",F:"Ⓕ",G:"Ⓖ",H:"Ⓗ",I:"Ⓘ",J:"Ⓙ",K:"Ⓚ",L:"Ⓛ",M:"Ⓜ",N:"Ⓝ",O:"Ⓞ",P:"Ⓟ",Q:"Ⓠ",R:"Ⓡ",S:"Ⓢ",T:"Ⓣ",U:"Ⓤ",V:"Ⓥ",W:"Ⓦ",X:"Ⓧ",Y:"Ⓨ",Z:"Ⓩ"};
+
+            var charArray = text.split("");
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function underlined(text) {
+
+            /*
+            Preview Copy Tweet
+
+            */
+
+            var map={0:"0͟",1:"1͟",2:"2͟",3:"3͟",4:"4͟",5:"5͟",6:"6͟",7:"7͟",8:"8͟",9:"9͟",a:"a͟",b:"b͟",c:"c͟",d:"d͟",e:"e͟",f:"f͟",g:"g͟",
+                h:"h͟",i:"i͟",j:"j͟",k:"k͟",l:"l͟",m:"m͟",n:"n͟",o:"o͟",p:"p͟",q:"q͟",
+                r:"r͟",s:"s͟",t:"t͟",u:"u͟",v:"v͟",w:"w͟",x:"x͟",y:"y͟",z:"z͟",
+                A:"A͟",B:"B͟",C:"C͟",D:"D͟",E:"E͟",F:"F͟",G:"G͟",
+                H:"H͟",I:"I͟",J:"J͟",K:"K͟",L:"L͟",M:"M͟",N:"N͟",
+                O:"O͟",P:"P͟",Q:"Q͟",R:"R͟",S:"S͟",T:"T͟",U:"U͟",
+                V:"V͟",W:"W͟",X:"X͟",Y:"Y͟",Z:"Z͟"};
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function curly(text) {
+
+            var map={a:"ǟ",b:"ɮ",c:"ƈ",d:"ɖ",e:"ɛ",f:"ʄ",g:"ɢ",h:"ɦ",i:"ɨ",j:"ʝ",k:"ӄ",l:"ʟ",m:"ʍ",n:"ռ",o:"օ",p:"ք",q:"զ",r:"ʀ",s:"ֆ",t:"ȶ",u:"ʊ",v:"ʋ",w:"ա",x:"Ӽ",y:"ʏ",z:"ʐ",A:"ǟ",B:"ɮ",C:"ƈ",D:"ɖ",E:"ɛ",F:"ʄ",G:"ɢ",H:"ɦ",I:"ɨ",J:"ʝ",K:"ӄ",L:"ʟ",M:"ʍ",N:"ռ",O:"օ",P:"ք",Q:"զ",R:"ʀ",S:"ֆ",T:"ȶ",U:"ʊ",V:"ʋ",W:"ա",X:"Ӽ",Y:"ʏ",Z:"ʐ"};
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function hebrew(text) {
+
+            var map={a:"ค",b:"๒",c:"ς",d:"๔",e:"є",f:"Ŧ",g:"ﻮ",h:"ђ",i:"เ",j:"ן",k:"к",l:"ɭ",m:"๓",n:"ภ",o:"๏",p:"ק",q:"ợ",r:"г",s:"ร",t:"Շ",u:"ย",v:"ש",w:"ฬ",x:"א",y:"ץ",z:"չ",A:"ค",B:"๒",C:"ς",D:"๔",E:"є",F:"Ŧ",G:"ﻮ",H:"ђ",I:"เ",J:"ן",K:"к",L:"ɭ",M:"๓",N:"ภ",O:"๏",P:"ק",Q:"ợ",R:"г",S:"ร",T:"Շ",U:"ย",V:"ש",W:"ฬ",X:"א",Y:"ץ",Z:"չ"};
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function yoda(text) {
+
+            var map={a:"ล",b:"в",c:"¢",d:"∂",e:"э",f:"ƒ",g:"φ",h:"ђ",i:"เ",j:"נ",k:"к",l:"ℓ",m:"м",n:"и",o:"๏",p:"ק",q:"ợ",r:"я",s:"ร",t:"†",u:"µ",v:"√",w:"ω",x:"җ",y:"ý",z:"ž",A:"ล",B:"в",C:"¢",D:"∂",E:"э",F:"ƒ",G:"φ",H:"ђ",I:"เ",J:"נ",K:"к",L:"ℓ",M:"м",N:"и",O:"๏",P:"ק",Q:"ợ",R:"я",S:"ร",T:"†",U:"µ",V:"√",W:"ω",X:"җ",Y:"ý",Z:"ž"};
+
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function hieroglyph(text) {
+
+            var map={a:"Թ",b:"Յ",c:"Շ",d:"Ժ",e:"ȝ",f:"Բ",g:"Գ",h:"ɧ",i:"ɿ",j:"ʝ",k:"ƙ",l:"ʅ",m:"ʍ",n:"Ռ",o:"Ծ",p:"ρ",q:"φ",r:"Ր",s:"Տ",t:"Ե",u:"Մ",v:"ע",w:"ա",x:"Ճ",y:"Վ",z:"Հ",A:"Թ",B:"Յ",C:"Շ",D:"Ժ",E:"ȝ",F:"Բ",G:"Գ",H:"ɧ",I:"ɿ",J:"ʝ",K:"ƙ",L:"ʅ",M:"ʍ",N:"Ռ",O:"Ծ",P:"ρ",Q:"φ",R:"Ր",S:"Տ",T:"Ե",U:"Մ",V:"ע",W:"ա",X:"Ճ",Y:"Վ",Z:"Հ"};
+
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function delta(text) {
+
+            var map={a:"Δ",b:"β",c:"Ć",d:"Đ",e:"€",f:"₣",g:"Ǥ",h:"Ħ",i:"Ɨ",j:"Ĵ",k:"Ҝ",l:"Ł",m:"Μ",n:"Ň",o:"Ø",p:"Ƥ",q:"Ω",r:"Ř",s:"Ş",t:"Ŧ",u:"Ữ",v:"V",w:"Ŵ",x:"Ж",y:"¥",z:"Ž",A:"Δ",B:"β",C:"Ć",D:"Đ",E:"€",F:"₣",G:"Ǥ",H:"Ħ",I:"Ɨ",J:"Ĵ",K:"Ҝ",L:"Ł",M:"Μ",N:"Ň",O:"Ø",P:"Ƥ",Q:"Ω",R:"Ř",S:"Ş",T:"Ŧ",U:"Ữ",V:"V",W:"Ŵ",X:"Ж",Y:"¥",Z:"Ž"};
+
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function superscript(text) {
+
+            var map={a:"ᵃ",b:"ᵇ",c:"ᶜ",d:"ᵈ",e:"ᵉ",f:"ᶠ",g:"ᵍ",h:"ʰ",i:"ⁱ",j:"ʲ",k:"ᵏ",l:"ˡ",m:"ᵐ",n:"ⁿ",o:"ᵒ",p:"ᵖ",q:"q",r:"ʳ",s:"ˢ",t:"ᵗ",u:"ᵘ",v:"ᵛ",w:"ʷ",x:"ˣ",y:"ʸ",z:"ᶻ",A:"ᴬ",B:"ᴮ",C:"ᶜ",D:"ᴰ",E:"ᴱ",F:"ᶠ",G:"ᴳ",H:"ᴴ",I:"ᴵ",J:"ᴶ",K:"ᴷ",L:"ᴸ",M:"ᴹ",N:"ᴺ",O:"ᴼ",P:"ᴾ",Q:"Q",R:"ᴿ",S:"ˢ",T:"ᵀ",U:"ᵁ",V:"ⱽ",W:"ᵂ",X:"ˣ",Y:"ʸ",Z:"ᶻ"};
+
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function dots(text) {
+
+            var map={a:"ä",b:"ḅ",c:"ċ",d:"ḋ",e:"ë",f:"ḟ",g:"ġ",h:"ḧ",i:"ï",j:"j",k:"ḳ",l:"ḷ",m:"ṁ",n:"ṅ",o:"ö",p:"ṗ",q:"q",r:"ṛ",s:"ṡ",t:"ẗ",u:"ü",v:"ṿ",w:"ẅ",x:"ẍ",y:"ÿ",z:"ż",A:"Ä",B:"Ḅ",C:"Ċ",D:"Ḋ",E:"Ё",F:"Ḟ",G:"Ġ",H:"Ḧ",I:"Ї",J:"J",K:"Ḳ",L:"Ḷ",M:"Ṁ",N:"Ṅ",O:"Ö",P:"Ṗ",Q:"Q",R:"Ṛ",S:"Ṡ",T:"Ṫ",U:"Ü",V:"Ṿ",W:"Ẅ",X:"Ẍ",Y:"Ÿ",Z:"Ż"};
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function smeared(text) {
+
+            var map={a:"a҉",b:"b҉",c:"c҉",d:"d҉",e:"e҉",f:"f҉",g:"g҉",h:"h҉",i:"i҉",j:"j҉",k:"k҉",l:"l҉",m:"m҉",n:"n҉",o:"o҉",p:"p҉",q:"q҉",r:"r҉",s:"s҉",t:"t҉",u:"u҉",v:"v҉",w:"w҉",x:"x҉",y:"y҉",z:"z҉",A:"A҉",B:"B҉",C:"C҉",D:"D҉",E:"E҉",F:"F҉",G:"G҉",H:"H҉",I:"I҉",J:"J҉",K:"K҉",L:"L҉",M:"M҉",N:"N҉",O:"O҉",P:"P҉",Q:"Q҉",R:"R҉",S:"S҉",T:"T҉",U:"U҉",V:"V҉",W:"W҉",X:"X҉",Y:"Y҉",Z:"Z҉"};
+
+            var charArray = text.split("");1
+            for(var i = 0; i < charArray.length; i++) {
+                if( map[charArray[i].toLowerCase()] ) {
+                    charArray[i] = map[charArray[i]];
+                }
+            }
+            text = charArray.join("");
+            return text;
+        }
+
+        function fontGenerator()
+        {
+            var text = $('#inputText').val();
+
+            $('#fontSmallCaps').val(smallCaps(text));
+            $('#fontMirrored').val(mirrored(text));
+            $('#fontFlipped').val(flipped(text));
+            $('#fontSlashed').val(slashed(text));
+            $('#fontBent').val(bent(text));
+            $('#fontJapanese').val(japanese(text));
+            $('#fontCircled').val(circled(text));
+            $('#fontUnderlined').val(underlined(text));
+            $('#fontCurly').val(curly(text));
+            $('#fontHebrew').val(hebrew(text));
+            $('#fontYoda').val(yoda(text));
+            $('#fontHieroglyph').val(hieroglyph(text));
+            $('#fontDelta').val(delta(text));
+            $('#fontSuperscript').val(superscript(text));
+            $('#fontDots').val(dots(text));
+            $('#fontSmeared').val(smeared(text));
+        }
+
+        function chunkify(a, n, balanced) {
+
+            if (n < 2)
+                return [a];
+
+            var len = a.length,
+                out = [],
+                i = 0,
+                size;
+
+            if (len % n === 0) {
+                size = Math.floor(len / n);
+                while (i < len) {
+                    out.push(a.slice(i, i += size));
+                }
+            }
+
+            else if (balanced) {
+                while (i < len) {
+                    size = Math.ceil((len - i) / n--);
+                    out.push(a.slice(i, i += size));
+                }
+            }
+
+            else {
+
+                n--;
+                size = Math.floor(len / n);
+                if (len % size === 0)
+                    size--;
+                while (i < size * n) {
+                    out.push(a.slice(i, i += size));
+                }
+                out.push(a.slice(size * n));
+
+            }
+
+            return out;
+        }
+
+
+
+        function updateGradient()
+        {
+            var gradientSteps = 0;
+            var gradientType = '';
+            var gradientSplit = [];
+            var sentenceSplit = [];
+            var firstPart = '';
+            var middlePart = [];
+            var thirdPart = '';
+
+            var checkboxElement = $('#gradientOnlyMiddle');
+
+            var hexColor1 = $('#colorPicker1').val();
+            var hexColor2 = $('#colorPicker2').val();
+
+            if ((document.getElementById("gradientPerWord").checked === true && checkboxElement.prop('checked') === false) || gradientSource.length === 1)
+            {
+                // per word
+                gradientSplit = gradientSource.split(' ');
+                gradientType = 'word';
+
+                checkboxElement.prop('disabled', false);
+            }
+            else if (document.getElementById("gradientPerWord").checked === true && checkboxElement.prop('checked') === true)
+            {
+                // per word, only middle part
+
+                // first, break up sentence in three parts
+                sentenceSplit = chunkify(gradientSource.split(' '),3,true);
+
+                // glue first part together
+                firstPart = sentenceSplit[0];
+                firstPart = firstPart.join(' ');
+
+                // middle part untouched
+                middlePart = sentenceSplit[1];
+
+                // glue third part together
+                thirdPart = sentenceSplit[2];
+
+                if (thirdPart)
+                {
+                    thirdPart = thirdPart.join(' ');
+                }
+
+                gradientSplit.push(firstPart);
+
+                if (middlePart)
+                {
+                    for (i = 0; i < middlePart.length; i++) {
+
+                        gradientSplit.push(middlePart[i]);
+
+                    }
+                }
+
+                if (thirdPart)
+                {
+                    gradientSplit.push(thirdPart);
+                }
+
+                gradientType = 'word';
+
+                checkboxElement.prop('disabled', false);
+            }
+            else if (document.getElementById("gradientPerLetter").checked === true && checkboxElement.prop('checked') === false)
+            {
+                // per letter
+                gradientSplit = gradientSource.split('');
+                gradientType = 'letter';
+
+                checkboxElement.prop('disabled', false);
+            }
+            else if (document.getElementById("gradientPerLetter").checked === true && checkboxElement.prop('checked') === true)
+            {
+                // per letter, only middle part
+                gradientType = 'letter';
+
+                // divide into three parts first
+                let parts = [];
+                let startPoints = [];
+
+                startPoints.push(0);
+                startPoints.push(Math.ceil(gradientSource.length / 3));
+                startPoints.push(gradientSource.length - startPoints[1]);
+                startPoints.push(gradientSource.length);
+
+                parts.push(gradientSource.substring(startPoints[0],startPoints[1]));
+
+                var middlePartText = gradientSource.substring(startPoints[1],startPoints[2]);
+                var middlePartLetterSplit = middlePartText.split('');
+
+                for (i = 0; i < middlePartLetterSplit.length; i++) {
+
+                    parts.push(middlePartLetterSplit[i]);
+                }
+
+                parts.push(gradientSource.substring(startPoints[2],startPoints[3]));
+
+                gradientSplit = parts;
+
+                checkboxElement.prop('disabled', false);
+            }
+            else if (document.getElementById("gradientPerLine").checked === true)
+            {
+                // per word
+                gradientSplit = gradientSource.split("\n");
+                gradientType = 'line';
+
+                checkboxElement.prop('disabled', true);
+            }
+            else if (document.getElementById("gradientPerParagraph").checked === true)
+            {
+                // per word
+                gradientSplit = gradientSource.split("\n\n");
+                gradientType = 'paragraph';
+
+                checkboxElement.prop('disabled', true);
+            }
+
+            gradientSteps = gradientSplit.length;
+
+
+            var colorArray = updateSpitter(hexColor1,hexColor2,gradientSteps);
+            var richText = '';
+            var extraSpace = '';
+
+            if (gradientType === 'word')
+            {
+                extraSpace = ' ';
+            }
+            else if (gradientType === 'line')
+            {
+                extraSpace = "\n";
+            }
+            else if (gradientType === 'paragraph')
+            {
+                extraSpace = "\n\n";
+            }
+
+
+            for (i = 0; i < gradientSteps; i++) {
+
+                if (gradientSplit[i] === ' ')
+                {
+                    richText = richText + ' ';
+                }
+                else if (gradientSplit[i] === '')
+                {
+                    richText = richText + "\n"
+                }
+                else
+                {
+                    richText = richText + '<color=#' + colorArray[i] + '>' + gradientSplit[i] + '</color>' + extraSpace;
+                }
+            }
+
+            richText = richText.trim();
+
+
+            $("#gradientTextarea").html(richText);
+
+            richText = richText.replace(/[\n]/g, '<br>');
+
+            var html = bbcodeParser.bbcodeToHtml(richText);
+            html = bbcodeParser.bbcodeToHtml(html);
+            html = bbcodeParser.bbcodeToHtml(html);
+
+
+            var gradientCharacterCount = $("#gradientTextarea").val().length;
+
+
+            $("#gradientCharacterCount").html(gradientCharacterCount);
+
+            html = html.replace(/[\n\r]/g, '<br>');
+
+            $("#gradientPreview").html(html);
+
+            $("#previewType").html(previewType);
+
+            var newCharacterCount = (characterCount - gradientSource.length) + gradientCharacterCount;
+
+            if (newCharacterCount <= 1000 && previewType === 'profile')
+            {
+                $("#newCharacterCount").html(newCharacterCount + ' / 1000');
+            }
+            else if (newCharacterCount > 1000 && previewType === 'profile')
+            {
+                $("#newCharacterCount").html("<span style='color:#ff0000;'>" + newCharacterCount + "</span> / 1000");
+            }
+            else if (newCharacterCount <= 240 && previewType === 'gift')
+            {
+                $("#newCharacterCount").html(newCharacterCount + ' / 240');
+            }
+            else if (newCharacterCount > 240 && previewType === 'gift')
+            {
+                $("#newCharacterCount").html("<span style='color:#ff0000;'>" + newCharacterCount + "</span> / 240");
+            }
+
+
+
+
+        }
+
+        function updateParsed()
+        {
+            var profileCode = $("#profileCode").val();
+
+            characterCount = profileCode.replace(/\r(?!\n)|\n(?!\r)/g, "\r\n").length;
+
+            profileCode = profileCode.replace(/[\n\r]/g, '<br>');
+            //profileCode = profileCode.replace(/[\s]/g, '&nbsp;');
+
+            var html = bbcodeParser.bbcodeToHtml(profileCode);
+            // this enables nesting, thanks AmyLaRouche ;-)
+            html = bbcodeParser.bbcodeToHtml(html);
+            html = bbcodeParser.bbcodeToHtml(html);
+
+            var warningCount = 0;
+
+            //var warningDiv = $("#characterCount").html(characterCount + ' / 1000');
+            var warningDiv = $("#warnings");
+            warningDiv.html('');
+
+            var countBopen = (profileCode.match(/\<b\>/g) || []).length;
+            var countBclosed = (profileCode.match(/\<\/b\>/g) || []).length;
+
+            if (profileCode.search(/\t/) > 0) {
+                warningDiv.append(`<span style='color: yellow;'>Tabs detected - unable to give proper preview</span><br>`);
+
+                profileCode = profileCode.replace(/[\t]/g, '&nbsp;&nbsp;&nbsp;');
+            }
+
+            if (countBopen > countBclosed)
+            {
+                warningDiv.append((countBopen - countBclosed) + ` open &#60;b&#62; tag(s)<br>`);
+                warningCount++;
+            }
+            else if (countBopen < countBclosed)
+            {
+                warningDiv.append((countBclosed - countBopen) + ` unopened &#60;b&#62; tag(s)<br>`);
+                warningCount++;
+            }
+
+            var countIopen = (profileCode.match(/\<i\>/g) || []).length;
+            var countIclosed = (profileCode.match(/\<\/i\>/g) || []).length;
+
+            if (countIopen > countIclosed)
+            {
+                warningDiv.append((countIopen - countIclosed) + ` open &#60;i&#62; tag(s)<br>`);
+                warningCount++;
+            }
+            else if (countIopen < countIclosed)
+            {
+                warningDiv.append((countIclosed - countIopen) + ` unopened &#60;i&#62; tag(s)<br>`);
+                warningCount++;
+            }
+
+            var countColoropen = (profileCode.match(/\<color=/g) || []).length;
+            var countColorclosed = (profileCode.match(/\<\/color\>/g) || []).length;
+
+            if (countColoropen > countColorclosed)
+            {
+                warningDiv.append((countColoropen - countColorclosed) + ` open &#60;color&#62; tag(s)<br>`);
+                warningCount++;
+            }
+            else if (countColoropen < countColorclosed)
+            {
+                warningDiv.append((countColorclosed - countColoropen) + ` unopened &#60;color&#62; tag(s)<br>`);
+                warningCount++;
+            }
+
+            var countSizeOpen = (profileCode.match(/\<size=/g) || []).length;
+            var countSizeClosed = (profileCode.match(/\<\/size\>/g) || []).length;
+
+            if (countSizeOpen > countSizeClosed)
+            {
+                warningDiv.append((countSizeOpen - countSizeClosed) + ` open &#60;size&#62; tag(s)<br>`);
+                warningCount++;
+            }
+            else if (countSizeOpen < countSizeClosed)
+            {
+                warningDiv.append((countSizeClosed - countSizeOpen) + ` unopened &#60;size&#62; tag(s)<br>`);
+                warningCount++;
+            }
+
+            var map = [];
+
+            $('#profileParsedValidation').children().each(function(_, node) {
+                map.push(node.nodeName);
+            });
+
+            if (profileCode.includes("<html>"))
+            {
+                map.push('HTML');
+            }
+
+            if (profileCode.includes("<head>"))
+            {
+                map.push('HEAD');
+            }
+
+            let uniqueItems = map.filter(onlyUnique);
+
+            var validElements = ["B","I","BR","SIZE","COLOR"];
+
+            $.each(uniqueItems, function (index, value)
+            {
+                if (!validElements.includes(value) && value.substring(0,6) !== 'COLOR=' && value.substring(0,5) !== 'SIZE=')
+                {
+                    warningDiv.append(`&#60;` + value.toLowerCase() + `&#62; is unsupported<br>`);
+                    warningCount++;
+                }
+            });
+
+            var profileCodeForXmlParser = profileCode.replace(/[^<]*(color|size)=[^>]*/g, (e) => {
+                const data = e.split('=')
+                return `${data[0]} value="${data[0] === 'color' ? (data[1]) : data[1]}"`
+            })
+
+            profileCodeForXmlParser = profileCodeForXmlParser.replace(/<br>/g, "");
+            profileCodeForXmlParser = profileCodeForXmlParser.replace(/&/g, "");
+            profileCodeForXmlParser = profileCodeForXmlParser.replace(/<3/g, "");
+
+            var xmlParserResults = parseXml('<haha>' + profileCodeForXmlParser + '</haha>');
+
+
+            if (warningCount === 0 && !checkHTML('<p>' + html + '</p>'))
+            {
+                warningDiv.append(`<span style='color: red;'>General syntax error!</span><br>`);
+            }
+            else if (profileCode.length > 0 && warningCount === 0 && xmlParserResults.getElementsByTagName('parsererror').length > 0)
+            {
+                warningDiv.append(`<span style='color: red;'>Error in tag order!</span><br>`);
+            }
+
+            if (characterCount <= 1000 && previewType === 'profile')
+            {
+                $("#characterCount").html(characterCount + ' / 1000');
+            }
+            else if (characterCount > 1000 && previewType === 'profile')
+            {
+                $("#characterCount").html("<span style='color:#ff0000;'>" + characterCount + "</span> / 1000");
+                warningDiv.append(`<span style='color: red;'>Too many characters!</span><br>`);
+            }
+            else if (characterCount <= 240 && previewType === 'gift')
+            {
+                $("#characterCount").html(characterCount + ' / 240');
+            }
+            else if (characterCount > 240 && previewType === 'gift')
+            {
+                $("#characterCount").html("<span style='color:#ff0000;'>" + characterCount + "</span> / 240");
+                warningDiv.append(`<span style='color: red;'>Too many characters!</span><br>`);
+            }
+
+            $("#profileParsed").html(html);
+            $("#profileParsedValidation").html(profileCode);
+            $("#giftParsed").html(html);
+
+
+            if (warningDiv.html().length > 0)
+            {
+                $('#errorDialog').show();
+            }
+            else
+            {
+                $('#errorDialog').hide();
+            }
+
+        }
+
+        function parseXml(xmlStr) {
+            return new window.DOMParser().parseFromString(xmlStr, "text/xml");
+        }
+
+    </script>
+
+
+
+</main>
+
+
+
 </body>
+
 </html>
