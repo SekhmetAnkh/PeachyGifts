@@ -75,6 +75,25 @@
         #parsedOutput em {
             font-style: italic;
         }
+        #codeInput, #parsedOutput {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            width: 57ch;
+            max-width: 100%;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+            padding: 10px;
+        }
+        #codeInput {
+            resize: vertical;
+        }
+        #parsedOutput {
+            min-height: 100px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -108,7 +127,7 @@
                 <div class="col-lg-6 col-md-9 mb-3" id="main1">
                     <textarea id="codeInput" class="form-control" rows="15" spellcheck="false"></textarea>
                 </div>
-                <div class="col-lg-4 col-md-12" id="main2">
+                <div class="col-lg-6 col-md-12" id="main2">
                     <div id="parsedOutput" class="parsedOutput"></div>
                 </div>
                 <div class="col-12" id="main3" style="display: none;">
@@ -157,8 +176,10 @@
                     .replace(/\[size=([^\]]+)\]([\s\S]*?)\[\/size\]/g, '<span style="font-size:$1px">$2</span>')
                     // Handle HTML style tags
                     .replace(/<color=([^>]+)>([\s\S]*?)<\/color>/g, '<span style="color:$1">$2</span>')
-                    .replace(/<size=([^>]+)>([\s\S]*?)<\/size>/g, '<span style="font-size:$1px">$2</span>')
-                    .replace(/\n/g, '<br>');
+                    .replace(/<size=([^>]+)>([\s\S]*?)<\/size>/g, '<span style="font-size:$1px">$2</span>');
+
+                html = wrapLongWords(html, 57);
+                html = html.replace(/\n/g, '<br>');
 
                 // Sanitize the HTML to prevent XSS attacks
                 const sanitizedHtml = DOMPurify.sanitize(html, {ALLOW_UNKNOWN_PROTOCOLS: true});
@@ -282,6 +303,10 @@
 
             // Initial setup
             updateMode('profile');
+
+            function wrapLongWords(str, maxWidth) {
+                return str.replace(new RegExp(`(?![^\\n]{1,${maxWidth}}$)([^\\n]{1,${maxWidth}})\\s`, 'g'), '$1\n');
+            }
         });
     </script>
 </body>
