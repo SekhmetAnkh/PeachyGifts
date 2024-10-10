@@ -77,6 +77,25 @@
         #warnings {
             color: #ff6b6b;
         }
+        .style-2 {
+            background-color: #1c2226;
+            border: 1px solid #4c5256;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        
+        .profileParsed {
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+            text-align: center;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -98,6 +117,17 @@
                 </div>
                 <div class="col-md-6">
                     <div id="parsedOutput"></div>
+                    <div id="profileImage" class="m-0" style="z-index: -50;">
+                        <form id="profileParsedForm">
+                            <div class="form-group">
+                                <label for="profileParsed"></label>
+                                <div class="style-2">
+                                    <pre id="profileParsed" class="profileParsed"></pre>
+                                    <pre id="profileParsedValidation" style="display:none;"></pre>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,6 +160,8 @@
                     .replace(/\n/g, '<br>');
 
                 $("#parsedOutput").html(html);
+                $("#profileParsed").html(html);
+                $("#profileParsedValidation").text(inputCode);
 
                 if (byteCount > BYTE_LIMIT) {
                     $("#warnings").html('Byte limit exceeded! Some characters may be cut off in-game.');
