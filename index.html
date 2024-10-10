@@ -150,14 +150,18 @@
                 $("#characterCount").text(`${characterCount} / ${limit}`);
 
                 let html = inputCode
+                    // Handle BBCode style tags
                     .replace(/\[b\]([\s\S]*?)\[\/b\]/g, '<strong>$1</strong>')
                     .replace(/\[i\]([\s\S]*?)\[\/i\]/g, '<em>$1</em>')
                     .replace(/\[color=([^\]]+)\]([\s\S]*?)\[\/color\]/g, '<span style="color:$1">$2</span>')
                     .replace(/\[size=([^\]]+)\]([\s\S]*?)\[\/size\]/g, '<span style="font-size:$1px">$2</span>')
+                    // Handle HTML style tags
+                    .replace(/<color=([^>]+)>([\s\S]*?)<\/color>/g, '<span style="color:$1">$2</span>')
+                    .replace(/<size=([^>]+)>([\s\S]*?)<\/size>/g, '<span style="font-size:$1px">$2</span>')
                     .replace(/\n/g, '<br>');
 
                 // Sanitize the HTML to prevent XSS attacks
-                const sanitizedHtml = DOMPurify.sanitize(html);
+                const sanitizedHtml = DOMPurify.sanitize(html, {ALLOW_UNKNOWN_PROTOCOLS: true});
 
                 $("#parsedOutput").html(sanitizedHtml);
 
