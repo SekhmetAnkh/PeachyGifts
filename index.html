@@ -6,6 +6,7 @@
     <title>Profile, Gift, and Font Text Editor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -56,6 +57,23 @@
         }
         .symbols-menu b:hover {
             background-color: #e9ecef;
+        }
+        #parsedOutput {
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 100px;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #parsedOutput strong {
+            font-weight: bold;
+        }
+        #parsedOutput em {
+            font-style: italic;
         }
     </style>
 </head>
@@ -131,13 +149,17 @@
                 const limit = characterLimits[currentMode];
                 $("#characterCount").text(`${characterCount} / ${limit}`);
 
-                const html = inputCode.replace(/\[b\](.*?)\[\/b\]/g, '<strong>$1</strong>')
-                                      .replace(/\[i\](.*?)\[\/i\]/g, '<em>$1</em>')
-                                      .replace(/\[color=(.*?)\](.*?)\[\/color\]/g, '<span style="color:$1">$2</span>')
-                                      .replace(/\[size=(.*?)\](.*?)\[\/size\]/g, '<span style="font-size:$1px">$2</span>')
-                                      .replace(/\n/g, '<br>');
+                let html = inputCode
+                    .replace(/\[b\]([\s\S]*?)\[\/b\]/g, '<strong>$1</strong>')
+                    .replace(/\[i\]([\s\S]*?)\[\/i\]/g, '<em>$1</em>')
+                    .replace(/\[color=([^\]]+)\]([\s\S]*?)\[\/color\]/g, '<span style="color:$1">$2</span>')
+                    .replace(/\[size=([^\]]+)\]([\s\S]*?)\[\/size\]/g, '<span style="font-size:$1px">$2</span>')
+                    .replace(/\n/g, '<br>');
 
-                $("#parsedOutput").html(html);
+                // Sanitize the HTML to prevent XSS attacks
+                const sanitizedHtml = DOMPurify.sanitize(html);
+
+                $("#parsedOutput").html(sanitizedHtml);
 
                 if (characterCount > limit) {
                     $("#warnings").html('Character limit exceeded!');
