@@ -19,24 +19,24 @@
             margin-top: 50px;
         }
         #codeInput, #parsedOutput {
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-family: 'Courier New', 'Lucida Console', monospace;
+            font-size: 12px; /* Adjust this to get the desired pixelated look */
+            line-height: 1.2;
+            letter-spacing: 0.5px; /* Slight spacing between letters for readability */
+            text-align: center;
+            background-color: #1c2226; /* Match the background color */
+            color: #e0e0e0;
+            border: 1px solid #4c5256;
+            padding: 10px;
             width: 100%;
             white-space: pre-wrap;
             word-wrap: break-word;
-            line-height: 1.5;
-            padding: 10px;
-            text-align: center;
-            background-color: #3c4246;
-            color: #e0e0e0;
-            border-color: #4c5256;
         }
         #codeInput {
             resize: vertical;
         }
         #parsedOutput {
             min-height: 100px;
-            border: 1px solid #4c5256;
             border-radius: 5px;
         }
         .symbols-menu {
