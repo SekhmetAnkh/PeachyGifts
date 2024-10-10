@@ -4,22 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Gift Text Editor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #2c3236;
             color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
         .editor-container {
             background-color: #3c4246;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
             padding: 30px;
-            margin-top: 50px;
+            width: 45%;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
         }
         #codeInput {
-            font-family: Arial, sans-serif;
             font-size: 15px;
             line-height: 1.2;
             letter-spacing: 0.5px;
@@ -28,16 +41,28 @@
             border: 1px solid #4c5256;
             padding: 10px;
             width: 100%;
+            height: 200px;
             white-space: pre-wrap;
             word-wrap: break-word;
             background-color: #2c3236;
             resize: vertical;
+            box-sizing: border-box;
+            margin-bottom: 15px;
         }
-        .btn-outline-secondary {
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .btn {
             color: #a0a0a0;
-            border-color: #a0a0a0;
+            border: 1px solid #a0a0a0;
+            background-color: transparent;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
         }
-        .btn-outline-secondary:hover {
+        .btn:hover {
             color: #1c2226;
             background-color: #a0a0a0;
         }
@@ -64,250 +89,312 @@
         .symbols-menu b:hover {
             background-color: #2c3236;
         }
-        h2 {
-            color: #ffffff;
-        }
-        #warnings {
-            color: #ff6b6b;
-        }
         #giftPreviewContainer {
             position: relative;
             width: 494px;
             height: 547px;
-            margin: 20px auto;
+            background-color: #2c3236;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #giftGroup {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
         #giftImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: url("https://raw.githubusercontent.com/SekhmetAnkh/ProfileEditor/main/images/gift1.png");
-            width: 494px;
-            height: 547px;
-            display: inline-block;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        #gift2Image {
+            position: absolute;
+            top: 65px;
+            left: 8px;
+            width: calc(100% - 16px);
+            height: 300px;
+            background: url("https://raw.githubusercontent.com/SekhmetAnkh/ProfileEditor/main/images/gift2.png") no-repeat center top;
+            background-size: contain;
         }
         #giftParsedForm {
-            position: relative;
-            height: 502px !important;
-            top: 40px;
+            position: absolute;
+            top: 340px;
             left: 8px;
-            width: 480px;
+            width: calc(100% - 16px);
+            height: calc(100% - 340px);
         }
         .giftParsed {
-            background: transparent !important;
-            border: 0 !important;
             width: 100%;
-            height: 480px;
-            overflow-y: scroll !important;
-            resize: none !important;
+            height: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            resize: none;
             overflow-wrap: break-word;
             white-space: pre-wrap;
-            background: url("https://raw.githubusercontent.com/SekhmetAnkh/ProfileEditor/main/images/gift2.png") !important;
-            background-attachment: local !important;
-            background-repeat: no-repeat  !important;
             text-align: center;
-            padding-top: 253px;
-        }
-        .giftFont {
-            line-height: 1.2;
-        }
-        .profilefont {
-            font-family: Arial, sans-serif;
             color: #fff;
+            font-family: Arial, sans-serif;
             font-size: 14px;
             word-spacing: -0.06rem;
             text-shadow: #6b6b6b 0 0 0.1em;
+            line-height: 1.2;
         }
-        .overflow {
-            overflow-wrap: break-word;
-            white-space: pre-wrap;
+        .giftParsed::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
-        .style-2::-webkit-scrollbar-track {
-            background-color: #1c2226;
-        }
-        .style-2::-webkit-scrollbar {
+        #customScrollbar {
+            position: absolute;
+            top: 50px;
+            right: 8px;
             width: 20px;
+            height: calc(100% - 50px);
             background-color: #1c2226;
+            z-index: 10;
         }
-        .style-2 {
-            overflow-x: hidden !important;
-        }
-        .style-2::-webkit-scrollbar-thumb {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-            background-image: url('https://raw.githubusercontent.com/SekhmetAnkh/ProfileEditor/main/images/scrollbar_icon.png');
-            background-position: center, center;
-            background-repeat: no-repeat, no-repeat;
+        #scrollThumb {
+            width: 20px;
             background-color: #2e3d42;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-image: url("https://raw.githubusercontent.com/SekhmetAnkh/ProfileEditor/main/images/scrollbar_icon.png");
+            background-position: center;
+            background-repeat: no-repeat;
         }
-        .style-2::-webkit-scrollbar-thumb:hover {
+        #scrollThumb:hover {
             background-color: #425a63;
+        }
+        #errorMessages {
+            color: #ff6b6b;
+            margin-top: 10px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="editor-container">
-            <h2 class="mb-4 text-center">Gift Text Editor</h2>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <div class="text-center mb-2">
-                        <button id="colorButton" class="btn btn-outline-secondary me-2" aria-label="Color"><i class="fas fa-palette"></i> Color</button>
-                        <button id="sizeButton" class="btn btn-outline-secondary me-2" aria-label="Size"><i class="fas fa-text-height"></i> Size</button>
-                        <button id="symbolsButton" class="btn btn-outline-secondary" aria-label="Symbols"><i class="fas fa-icons"></i> Symbols</button>
-                    </div>
-                    <textarea id="codeInput" class="form-control" rows="10" spellcheck="false"></textarea>
-                    <div id="characterCountDiv" class="mt-2 text-center">
-                        Characters: <span id="characterCount" class="badge bg-primary">0 (0 bytes) / 240</span>
-                    </div>
-                    <div id="warnings" class="mt-2 text-center"></div>
+            <h2>Gift Text Editor</h2>
+            <div>
+                <textarea id="codeInput" placeholder="Enter your text here..."></textarea>
+            </div>
+            <div class="button-container">
+                <button id="boldButton" class="btn"><i class="fas fa-bold"></i></button>
+                <button id="italicButton" class="btn"><i class="fas fa-italic"></i></button>
+                <button id="underlineButton" class="btn"><i class="fas fa-underline"></i></button>
+                <button id="colorButton" class="btn"><i class="fas fa-palette"></i></button>
+                <input type="color" id="colorPicker" style="display: none;">
+                <button id="sizeButton" class="btn"><i class="fas fa-text-height"></i></button>
+                <button id="symbolsButton" class="btn"><i class="fas fa-symbols"></i></button>
+            </div>
+            <div id="errorMessages"></div>
+            <div id="characterCount">Characters: 0 / 240</div>
+        </div>
+        <div id="giftPreviewContainer">
+            <div id="giftGroup">
+                <div id="giftImage"></div>
+                <div id="gift2Image"></div>
+                <div id="giftParsedForm">
+                    <pre id="giftParsed" class="giftParsed profilefont overflow giftFont"></pre>
                 </div>
-                <div class="col-md-6">
-                    <div id="giftPreviewContainer">
-                        <div id="giftImage">
-                            <form id="giftParsedForm">
-                                <div class="form-group">
-                                    <pre id="giftParsed" class="giftParsed profilefont overflow giftFont style-2"></pre>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div id="customScrollbar">
+                <div id="scrollThumb"></div>
             </div>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            const BYTE_LIMIT = 240;
-
-            function getByteLength(str) {
-                return new Blob([str]).size;
-            }
-
-            function updateGiftPreview() {
-                var giftCode = $("#codeInput").val();
-                var characterCount = getByteLength(giftCode);
-                
-                giftCode = giftCode.replace(/[\n\r]/g, '<br>');
-                
-                var html = bbcodeParser.bbcodeToHtml(giftCode);
-                
-                var warningDiv = $("#warnings");
-                warningDiv.html('');
-                
-                // Add warning checks here if needed
-                
-                $("#giftParsed").html(html);
-                
-                $("#characterCount").html(characterCount + ' (' + characterCount + ' bytes) / ' + BYTE_LIMIT);
-                if (characterCount > BYTE_LIMIT) {
-                    $("#characterCount").css('color', 'red');
-                } else {
-                    $("#characterCount").css('color', '');
-                }
-            }
-
-            $('#colorButton').on('click', function() {
-                let color = prompt('Enter a color (e.g., red, #FF0000):');
-                if (color) {
-                    $('#codeInput').insertAtCaret(`<color=${color}>` + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '</color>');
-                }
+            // Button click handlers
+            $('#boldButton').click(function() {
+                insertTag('b');
             });
 
-            $('#sizeButton').on('click', function() {
-                let size = prompt('Enter a size (1-100):');
+            $('#italicButton').click(function() {
+                insertTag('i');
+            });
+
+            $('#underlineButton').click(function() {
+                insertTag('u');
+            });
+
+            $('#colorButton').click(function() {
+                $('#colorPicker').click();
+            });
+
+            $('#colorPicker').change(function() {
+                var color = $(this).val();
+                insertTag('span style="color: ' + color + '"');
+            });
+
+            $('#sizeButton').click(function() {
+                var size = prompt('Enter font size (in pixels):', '14');
                 if (size) {
-                    size = Math.min(Math.max(parseInt(size), 1), 100);
-                    $('#codeInput').insertAtCaret(`<size=${size}>` + $('#codeInput').val().substring($('#codeInput')[0].selectionStart, $('#codeInput')[0].selectionEnd) + '</size>');
+                    insertTag('span style="font-size: ' + size + 'px"');
                 }
             });
 
-            function createSymbolsMenu() {
-                const symbols = ['❤', '★', '☆', '☀', '☁', '☂', '☃', '☄', '☎', '☮', '☯', '☸', '☹', '☺', '☻', '☼', '☽', '☾', '♠', '♡', '♢', '♣', '♤', '♥', '♦', '♧', '♨', '♩', '♪', '♫', '♬', '♭', '♮', '♯'];
-                let symbolsHtml = '<div class="symbols-menu" style="display:none;">';
-                symbols.forEach(symbol => {
-                    symbolsHtml += `<b>${symbol}</b>`;
-                });
-                symbolsHtml += '</div>';
-                $('body').append(symbolsHtml);
+            $('#symbolsButton').click(function() {
+                // You can implement a symbol picker here if needed
+            });
+
+            // Function to insert HTML tags
+            function insertTag(tag) {
+                var textarea = document.getElementById('codeInput');
+                var start = textarea.selectionStart;
+                var end = textarea.selectionEnd;
+                var selectedText = textarea.value.substring(start, end);
+                var replacement = '<' + tag + '>' + selectedText + '</' + tag.split(' ')[0] + '>';
+                
+                textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start + replacement.length, start + replacement.length);
+                
+                updateGiftPreview();
             }
 
-            $('#symbolsButton').on('click', function(e) {
-                $('.symbols-menu').toggle();
-                e.stopPropagation();
-            });
+            // Function to update gift preview
+            function updateGiftPreview() {
+                var input = $('#codeInput').val();
+                $('#giftParsed').html(input);
+                validateInput(input);
+            }
 
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('.symbols-menu').length && !$(e.target).is('#symbolsButton')) {
-                    $('.symbols-menu').hide();
-                }
-            });
+            function validateInput(input) {
+                let errors = [];
+                let byteSize = new Blob([input]).size;
 
-            $(document).on('click', '.symbols-menu b', function(e) {
-                $('#codeInput').insertAtCaret($(this).text());
-                updateGiftPreview();
-                e.stopPropagation();
-            });
-
-            $.fn.insertAtCaret = function(text) {
-                return this.each(function() {
-                    if (document.selection) {
-                        this.focus();
-                        var sel = document.selection.createRange();
-                        sel.text = text;
-                    } else if (this.selectionStart || this.selectionStart === 0) {
-                        var startPos = this.selectionStart;
-                        var endPos = this.selectionEnd;
-                        this.value = this.value.substring(0, startPos) + text + this.value.substring(endPos);
-                        this.selectionStart = this.selectionEnd = startPos + text.length;
-                    } else {
-                        this.value += text;
+                // Error 1-8: Tag mismatch warnings
+                let tags = ['b', 'i', 'color', 'size'];
+                tags.forEach(tag => {
+                    let openCount = (input.match(new RegExp(`<${tag}`, 'gi')) || []).length;
+                    let closeCount = (input.match(new RegExp(`</${tag}>`, 'gi')) || []).length;
+                    if (openCount > closeCount) {
+                        errors.push(`${openCount - closeCount} open <${tag}> tag(s)`);
+                    } else if (openCount < closeCount) {
+                        errors.push(`${closeCount - openCount} unopened <${tag}> tag(s)`);
                     }
-                    $(this).trigger('input');
                 });
-            };
 
-            $('#codeInput').on('input', function() {
-                if (getByteLength($(this).val()) > BYTE_LIMIT) {
-                    $(this).val(function(i, text) {
-                        while (getByteLength(text) > BYTE_LIMIT) {
-                            text = text.slice(0, -1);
-                        }
-                        return text;
+                // Error 9: Unsupported element warning
+                let unsupportedTags = input.match(/<(?!\/?(b|i|color|size))[^>]+>/g);
+                if (unsupportedTags) {
+                    unsupportedTags.forEach(tag => {
+                        errors.push(`"${tag}" is unsupported`);
                     });
                 }
-                updateGiftPreview();
-            });
 
-            createSymbolsMenu();
+                // Error 11: Too many characters for gifts
+                if (byteSize > 240) {
+                    errors.push("Too many characters!");
+                }
+
+                // Error 12: General syntax error
+                if (/<[^>]*[<>][^>]*>/.test(input)) {
+                    errors.push("General syntax error!");
+                }
+
+                // Error 13: Error in tag order
+                let stack = [];
+                let tagPattern = /<\/?([^>]+)>/g;
+                let match;
+                let orderError = false;
+                while ((match = tagPattern.exec(input)) !== null) {
+                    if (match[0].startsWith('</')) {
+                        if (stack.pop() !== match[1]) {
+                            orderError = true;
+                            break;
+                        }
+                    } else {
+                        stack.push(match[1]);
+                    }
+                }
+                if (orderError || stack.length > 0) {
+                    errors.push("Error in tag order!");
+                }
+
+                // Error 14: Tabs detected
+                if (/\t/.test(input)) {
+                    errors.push("Tabs detected - unable to give proper preview");
+                }
+
+                // Display errors
+                $('#errorMessages').html(errors.join('<br>'));
+
+                // Update character count
+                $('#characterCount').html(`Characters: ${byteSize} / 240`);
+                if (byteSize > 240) {
+                    $('#characterCount').css('color', '#ff6b6b');
+                } else {
+                    $('#characterCount').css('color', '#e0e0e0');
+                }
+            }
+
+            // Initial preview update and event binding
             updateGiftPreview();
-
-            // Check if images are loading
-            $('<img>').attr('src', 'https://3dxchat-status.com/image/gift1.png?12').on('load', function() {
-                console.log('Gift background 1 loaded successfully');
-            }).on('error', function() {
-                console.error('Failed to load gift background 1');
-            });
-
-            $('<img>').attr('src', 'https://3dxchat-status.com/image/gift2.png?12').on('load', function() {
-                console.log('Gift background 2 loaded successfully');
-            }).on('error', function() {
-                console.error('Failed to load gift background 2');
-            });
+            $('#codeInput').on('input', updateGiftPreview);
         });
 
-        // BBCode to HTML conversion function
-        var bbcodeParser = {
-            bbcodeToHtml: function(str) {
-                var html = str;
+        document.addEventListener('DOMContentLoaded', function() {
+            const giftParsed = document.getElementById('giftParsed');
+            const customScrollbar = document.getElementById('customScrollbar');
+            const scrollThumb = document.getElementById('scrollThumb');
 
-                html = html.replace(/\[i\](.*?)\[\/i\]/ig, '<i>$1</i>');
-                html = html.replace(/\[b\](.*?)\[\/b\]/ig, '<b>$1</b>');
-                html = html.replace(/\[u\](.*?)\[\/u\]/ig, '<u>$1</u>');
-                html = html.replace(/\[color=([#a-z0-9]+)\](.*?)\[\/color\]/ig, '<span style="color: $1;">$2</span>');
-                html = html.replace(/\[size=([0-9]+)\](.*?)\[\/size\]/ig, '<span style="font-size: $1px;">$2</span>');
+            let isDragging = false;
+            let startY, startTop;
 
-                return html;
+            function updateScrollThumb() {
+                const scrollPercentage = giftParsed.scrollTop / (giftParsed.scrollHeight - giftParsed.clientHeight);
+                const thumbHeight = Math.max(30, (giftParsed.clientHeight / giftParsed.scrollHeight) * customScrollbar.clientHeight);
+                scrollThumb.style.height = `${thumbHeight}px`;
+                const maxTop = customScrollbar.clientHeight - thumbHeight;
+                const thumbTop = scrollPercentage * maxTop;
+                scrollThumb.style.top = `${thumbTop}px`;
             }
-        };
+
+            function scrollContent(e) {
+                const rect = customScrollbar.getBoundingClientRect();
+                const clickPosition = (e.clientY - rect.top) / rect.height;
+                giftParsed.scrollTop = clickPosition * (giftParsed.scrollHeight - giftParsed.clientHeight);
+            }
+
+            giftParsed.addEventListener('scroll', updateScrollThumb);
+            customScrollbar.addEventListener('click', scrollContent);
+
+            scrollThumb.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                startY = e.clientY;
+                startTop = scrollThumb.offsetTop;
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+                const deltaY = e.clientY - startY;
+                const maxTop = customScrollbar.clientHeight - scrollThumb.clientHeight;
+                const newTop = Math.max(0, Math.min(startTop + deltaY, maxTop));
+                const scrollPercentage = newTop / maxTop;
+                giftParsed.scrollTop = scrollPercentage * (giftParsed.scrollHeight - giftParsed.clientHeight);
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+            // Initial setup
+            updateScrollThumb();
+        });
     </script>
 </body>
 </html>
