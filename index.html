@@ -113,8 +113,9 @@
 
             function updateParsed() {
                 const inputCode = $("#codeInput").val();
+                const byteCount = getByteLength(inputCode);
                 const characterCount = inputCode.length;
-                $("#characterCount").text(`${characterCount} / ${characterLimit}`);
+                $("#characterCount").text(`${characterCount} (${byteCount} bytes) / 300`);
 
                 let html = inputCode
                     .replace(/<color=(#?\w+)>/g, '<span style="color:$1">')
@@ -128,8 +129,8 @@
 
                 $("#parsedOutput").html(html);
 
-                if (characterCount > characterLimit) {
-                    $("#warnings").html('Character limit exceeded!');
+                if (byteCount > 300) {
+                    $("#warnings").html('Byte limit exceeded! Some characters may be cut off in-game.');
                 } else {
                     $("#warnings").html('');
                 }
@@ -195,7 +196,17 @@
                 });
             };
 
-            $('#codeInput').on('input', updateParsed);
+            $('#codeInput').on('input', function() {
+                if (getByteLength($(this).val()) > 300) {
+                    $(this).val(function(i, text) {
+                        while (getByteLength(text) > 300) {
+                            text = text.slice(0, -1);
+                        }
+                        return text;
+                    });
+                }
+                updateParsed();
+            });
 
             createSymbolsMenu();
             updateParsed();
